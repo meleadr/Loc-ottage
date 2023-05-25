@@ -1,10 +1,12 @@
 <template>
     <div class="not-found-container">
-        <h1 class="error-code">404</h1>
-        <p class="error-message">
-            Oops! The page you are looking for does not exist.
-        </p>
-        <button class="button" @click="goBack">Go Back</button>
+        <div class="background">
+            <h1 class="error-code">404</h1>
+            <p class="error-message">
+                Oups! La page que vous cherchez n'existe pas.
+            </p>
+            <button class="button" @click="goBack">Revenir en arriere</button>
+        </div>
     </div>
 </template>
 
@@ -31,17 +33,21 @@ const goBack = () => {
     background-color: $color-background-light;
     color: $color-text-dark;
 
+    .background {
+        padding: $spacing-large;
+        border-radius: $border-radius-default;
+        background-color: $color-secondary-light;
+    }
+
     .error-code {
+        color: $color-primary-dark;
         font-size: 3em;
         margin-bottom: $spacing-default;
     }
 
     .error-message {
         margin-bottom: $spacing-large;
-    }
-
-    .button {
-        padding: $spacing-small $spacing-default;
+        font-size: $font-size-large;
     }
 }
 </style>

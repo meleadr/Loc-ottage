@@ -1,19 +1,22 @@
 <template>
     <div class="login-container">
         <h1 class="login-title">Login</h1>
-        <form @submit.prevent="submitForm">
+        <form @submit.prevent="login">
             <div class="input-group">
-                <label for="username">Username:</label>
+                <label for="username">Email :</label>
                 <input id="username" type="text" v-model="username" required />
             </div>
             <div class="input-group">
-                <label for="password">Password:</label>
+                <label for="password">Mot de passe :</label>
                 <input
                     id="password"
                     type="password"
                     v-model="password"
                     required
                 />
+            </div>
+            <div class="input-group">
+                <p v-if="error" class="error">{{ error }}</p>
             </div>
             <div class="input-group">
                 <button class="button" type="submit">Login</button>
@@ -24,15 +27,31 @@
 
 <script setup>
 import { ref } from "vue";
+import axios from "axios";
+import router from "@/router";
 
 const username = ref("");
 const password = ref("");
 
-const submitForm = () => {
-    // here you can handle form submission,
-    // like making an API request to your backend
-    console.log("Username:", username.value);
-    console.log("Password:", password.value);
+let error = ref(null);
+
+const login = async () => {
+    await axios
+        .post("/api/auth/login", {
+            email: username.value,
+            password: password.value,
+        })
+        .then((response) => {
+            if (response.data.success) {
+                sessionStorage.setItem("token", response.data.token);
+                router.push("/admin");
+            } else {
+                error.value = response.data.message;
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 };
 </script>
 

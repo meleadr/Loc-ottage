@@ -1,4 +1,7 @@
 {
+    "name": "locottage",
+    "version": "0.0.1",
+    "description": "A Vue.js/Laravel project to manage your cottage",
     "private": true,
     "type": "module",
     "scripts": {

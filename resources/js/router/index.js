@@ -6,8 +6,6 @@ import Presentation from "../components/pages/Presentation.vue";
 import Login from "../components/pages/Login.vue";
 import Chalet from "../components/pages/Chalet.vue";
 
-// Pages
-
 // NotFound
 import NotFound from "../components/pages/NotFound.vue";
 

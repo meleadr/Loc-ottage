@@ -1,0 +1,39 @@
+// _variables.scss
+
+// Primary Colors
+$color-primary-dark: #b87333;
+$color-primary-light: #3378b8;
+
+// Secondary Colors (optional)
+$color-secondary-dark: darken($color-primary-dark, 10%);
+$color-secondary-light: lighten($color-primary-light, 10%);
+
+// Text Colors
+$color-text-dark: darken($color-primary-dark, 50%);
+$color-text-light: lighten($color-primary-light, 50%);
+
+// Border Colors
+$color-border-dark: darken($color-primary-dark, 20%);
+$color-border-light: lighten($color-primary-light, 20%);
+
+// Background Colors
+$color-background-dark: darken($color-primary-dark, 5%);
+$color-background-light: lighten($color-primary-light, 5%);
+
+// Sizes
+$font-size-default: 1em;
+$font-size-large: 1.25em;
+$font-size-small: 0.8em;
+
+// Spacing
+$spacing-small: 0.5em;
+$spacing-default: 1em;
+$spacing-large: 2em;
+
+// Border Radius
+$border-radius-small: 0.25em;
+$border-radius-default: 0.5em;
+$border-radius-large: 1em;
+
+// Other commonly used variables
+$font-family-default: "Roboto", sans-serif;

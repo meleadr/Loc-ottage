@@ -6,13 +6,13 @@
             <img src="/images/chalet.jpg" alt="Chalet" />
         </div>
         <div class="chalet__info">
-            <p><strong>Taille:</strong> {{ chalet.size }} sqm</p>
+            <p><strong>Taille:</strong> {{ chalet.size }} m2</p>
             <p>
                 <strong>Personnes:</strong>
-                {{ chalet.persons }} persons
+                {{ chalet.persons }} personnes
             </p>
             <p><strong>Chambre:</strong> {{ chalet.bedrooms }}</p>
-            <p><strong>Prix par nuit:</strong> {{ chalet.price }} $</p>
+            <p><strong>Prix par nuit:</strong> {{ chalet.price }} €</p>
             <div class="chalet__info__description">
                 <p>{{ chalet.description }}</p>
             </div>

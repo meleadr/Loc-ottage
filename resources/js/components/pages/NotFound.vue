@@ -36,11 +36,11 @@ const goBack = () => {
     .background {
         padding: $spacing-large;
         border-radius: $border-radius-default;
-        background-color: $color-secondary-light;
+        background-color: $color-secondary;
     }
 
     .error-code {
-        color: $color-primary-dark;
+        color: $color-primary;
         font-size: 3em;
         margin-bottom: $spacing-default;
     }

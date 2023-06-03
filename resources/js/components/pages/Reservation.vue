@@ -16,7 +16,7 @@
         </div>
 
         <div v-show="step === 2">
-            <h3>Personal Information</h3>
+            <h3>Informations personnelles</h3>
             <div class="info">
                 <label>
                     Prenom:
@@ -42,21 +42,30 @@
         </div>
 
         <div v-show="step === 3">
-            <h3>Numbers of Persons</h3>
+            <h3>Nombres de personnes</h3>
             <div class="info">
                 <label>
-                    Number of persons:
+                    Nombre d'adultes:
                     <input
-                        v-model="reservation.persons"
+                        v-model="reservation.adult"
                         type="number"
                         min="1"
+                        required
+                    />
+                </label>
+                <label>
+                    Nombre d'enfants:
+                    <input
+                        v-model="reservation.children"
+                        type="number"
+                        min="0"
                         required
                     />
                 </label>
             </div>
             <div class="div_button">
                 <div class="button" @click="step--">Retour</div>
-                <div class="button" @click="submitReservation">Suivant</div>
+                <div class="button" @click="submitReservation">Valider</div>
             </div>
         </div>
 
@@ -75,7 +84,8 @@ const reservation = ref({
     surname: "",
     email: "",
     phone: "",
-    persons: 1,
+    adult: 1,
+    children: 0,
 });
 
 const chalet = route.query.chalet;

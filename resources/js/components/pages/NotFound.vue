@@ -5,7 +5,7 @@
             <p class="error-message">
                 Oups! La page que vous cherchez n'existe pas.
             </p>
-            <button class="button" @click="goBack">Revenir en arriere</button>
+            <div class="button" @click="goBack">Revenir en arriere</div>
         </div>
     </div>
 </template>
@@ -36,16 +36,17 @@ const goBack = () => {
     .background {
         padding: $spacing-large;
         border-radius: $border-radius-default;
-        background-color: $color-secondary;
+        background-color: $color-primary-hover;
     }
 
     .error-code {
-        color: $color-primary;
+        color: $color-secondary;
         font-size: 3em;
         margin-bottom: $spacing-default;
     }
 
     .error-message {
+        color: $color-text-light;
         margin-bottom: $spacing-large;
         font-size: $font-size-large;
     }

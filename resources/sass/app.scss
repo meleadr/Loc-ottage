@@ -34,6 +34,7 @@ body {
     padding: $spacing-small $spacing-default;
     border-radius: $border-radius-small;
     text-decoration: none;
+    text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
@@ -52,12 +53,4 @@ body {
 // Basic styles for main content area
 .main {
     padding: $spacing-large 0;
-}
-
-// Footer styles
-.footer {
-    background-color: $color-primary;
-    padding: $spacing-default;
-    color: $color-text-light;
-    text-align: center;
 }

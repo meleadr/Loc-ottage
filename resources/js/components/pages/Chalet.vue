@@ -1,18 +1,20 @@
 <template>
-    <NavBar />
     <div class="chalet">
         <div class="chalet__left">
             <h1>{{ chalet.title }}</h1>
-            <img src="/assets/images/cottage/chalet.jpg" alt="Chalet" />
+            <img src="/assets/images/cottage/chalet.jpg" :alt="chalet.title" />
+            <div class="chalet__info">
+                <p><strong>Taille:</strong> {{ chalet.size }} m2</p>
+                <p>
+                    <strong>Personnes:</strong>
+                    {{ chalet.persons }} personnes
+                </p>
+                <p><strong>Chambre:</strong> {{ chalet.bedrooms }}</p>
+                <p><strong>Prix par nuit:</strong> {{ chalet.price }} €</p>
+            </div>
+            <a href="/" class="button">Retour</a>
         </div>
-        <div class="chalet__info">
-            <p><strong>Taille:</strong> {{ chalet.size }} m2</p>
-            <p>
-                <strong>Personnes:</strong>
-                {{ chalet.persons }} personnes
-            </p>
-            <p><strong>Chambre:</strong> {{ chalet.bedrooms }}</p>
-            <p><strong>Prix par nuit:</strong> {{ chalet.price }} €</p>
+        <div class="chalet__right">
             <div class="chalet__info__description">
                 <p>{{ chalet.description }}</p>
             </div>
@@ -21,27 +23,46 @@
                 <VueDatePicker
                     v-model="date"
                     range
+                    min-range="1"
                     inline
+                    auto-apply
                     :disabled-dates="disabledDates"
                     :enable-time-picker="false"
-                ></VueDatePicker>
+                    @update:model-value="handleDate"
+                >
+                    <template #action-extra="{ selectCurrentDate }">
+                        <span
+                            @click="selectCurrentDate()"
+                            title="Select current date"
+                        >
+                            <img
+                                class="slot-icon"
+                                src="/assets/images/logo.png"
+                            />
+                        </span>
+                    </template>
+                </VueDatePicker>
             </div>
-
             <div class="chalet__book">
-                <button class="btn btn--primary">Réserver</button>
-                <p class="chalet__book__price">
-                    <strong>Prix total:</strong> {{ chalet.price }} €
+                <p class="error" v-show="error">
+                    {{ error }}
                 </p>
+                <p class="chalet__book__price" v-show="totalPrice != 0">
+                    <strong>Prix total:</strong> {{ totalPrice }} €
+                </p>
+                <div class="button" @click="goReservation()">Réserver</div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import NavBar from "../NavBar.vue";
+import { ref, computed, reactive } from "vue";
+import { useRouter } from "vue-router";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+
+const router = useRouter();
 
 const disabledDates = computed(() => {
     const today = new Date();
@@ -64,29 +85,61 @@ const chalet = ref({
     description:
         "A lovely cottage situated in a serene and peaceful environment...",
 });
+
+const error = ref(null);
+
+const date = reactive({ start: null, end: null });
+
+const handleDate = (modelData) => {
+    date.start = modelData[0];
+    date.end = modelData[1];
+};
+
+const totalPrice = computed(() => {
+    if (date.start && date.end) {
+        const diffTime = Math.abs(date.end - date.start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // calculate the difference in days
+        error.value = null;
+        return diffDays * chalet.value.price;
+    } else {
+        error.value = "Veuillez selectionner une date";
+    }
+    return 0;
+});
+
+const goReservation = () => {
+    if (date.start && date.end) {
+        router.push({
+            name: "Reservation",
+            query: {
+                chalet: chalet.value.title,
+                startDate: date.start,
+                endDate: date.end,
+                totalPrice: totalPrice.value,
+            },
+        });
+    }
+};
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @use "@sass/_variables" as *;
 
 .chalet {
     display: flex;
     color: $color-text-dark;
     background-color: $color-background-light;
-    border: 1px solid $color-border-dark;
-    border-radius: $border-radius-default;
     padding: $spacing-default;
     font-family: $font-family-default;
 
     &__left {
         width: 50vw;
         h1 {
-            font-size: $font-size-large;
-            color: $color-primary;
+            color: $color-secondary;
             margin-bottom: $spacing-default;
 
             &:hover {
-                color: $color-primary-hover;
+                color: $color-secondary-hover;
             }
         }
 
@@ -97,19 +150,14 @@ const chalet = ref({
         }
     }
 
-    &__info {
+    &__right {
         width: 50vw;
         font-size: $font-size-default;
         color: $color-text-dark;
         line-height: 1.5;
 
-        &__description {
-            font-size: $font-size-default;
-            color: $color-text-light;
-            margin-top: $spacing-large;
-        }
-
         p {
+            color: $color-primary-dark;
             margin-bottom: $spacing-small;
         }
 
@@ -122,20 +170,38 @@ const chalet = ref({
         }
     }
 
+    &__info {
+        display: inline-flex;
+        margin-bottom: $spacing-large;
+    }
+
+    &__description {
+        font-size: $font-size-default;
+        color: $color-text-light;
+        margin-top: $spacing-large;
+    }
+
     &__calendar {
         margin-top: $spacing-large;
     }
 
     &__book {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
-        align-items: center;
         margin-top: $spacing-large;
 
         &__price {
             font-size: $font-size-large;
             color: $color-primary;
+            margin-bottom: $spacing-default;
         }
     }
+}
+
+.slot-icon {
+    height: 40px;
+    width: auto;
+    cursor: pointer;
 }
 </style>

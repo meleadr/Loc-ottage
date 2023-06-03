@@ -5,6 +5,7 @@ import Admin from "../components/pages/Admin.vue";
 import Presentation from "../components/pages/Presentation.vue";
 import Login from "../components/pages/Login.vue";
 import Chalet from "../components/pages/Chalet.vue";
+import Reservation from "../components/pages/Reservation.vue";
 
 // NotFound
 import NotFound from "../components/pages/NotFound.vue";
@@ -12,17 +13,23 @@ import NotFound from "../components/pages/NotFound.vue";
 const routes = [
     {
         path: "/",
-        Name: "Presentation",
+        name: "Presentation",
         component: Presentation,
     },
     {
-        path: "/chalet",
-        Name: "Chalet",
+        path: "/chalet/:id",
+        name: "Chalet",
         component: Chalet,
     },
     {
+        path: "/chalet/reservation",
+        name: "Reservation",
+        component: Reservation,
+        props: true,
+    },
+    {
         path: "/admin",
-        Name: "Admin",
+        name: "Admin",
         component: Admin,
         meta: {
             requiresAuth: true,
@@ -30,12 +37,12 @@ const routes = [
     },
     {
         path: "/admin/login",
-        Name: "Login",
+        name: "Login",
         component: Login,
     },
     {
         path: "/:pathMatch(.*)*",
-        Name: "NotFound",
+        name: "NotFound",
         component: NotFound,
     },
 ];
@@ -46,7 +53,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-    if (to.meta.requiresAuth && !localStorage.getItem("token")) {
+    if (to.meta.requiresAuth && !sessionStorage.getItem("token")) {
         return "/admin/login";
     }
 });

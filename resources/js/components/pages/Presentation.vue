@@ -51,50 +51,50 @@
 </template>
 
 <script setup>
-import axios from "axios";
-import { ref, onMounted } from "vue";
+    import axios from "axios";
+    import { ref, onMounted } from "vue";
 
-// Import des composants
-import CottageCard from "../CottageCard.vue";
+    // Import des composants
+    import CottageCard from "../CottageCard.vue";
 
-// Déclaration des variables
-const cottages = ref([]);
+    // Déclaration des variables
+    const cottages = ref([]);
 
-// Fonction pour récupérer les cottages de la base de données
-const fetchCottages = async () => {
-    // use axios to fetch data from the API
-    const response = await axios.get("/api/cottages/getAllCottages");
-    // set the value of the cottages variable to the data from the API
-    cottages.value = response.data;
-};
+    // Fonction pour récupérer les cottages de la base de données
+    const fetchCottages = async () => {
+        // use axios to fetch data from the API
+        const response = await axios.get("/api/cottages/getAllCottages");
+        // set the value of the cottages variable to the data from the API
+        cottages.value = response.data;
+    };
 
-// Appel de la fonction fetchCottages lors du montage du composant
-onMounted(fetchCottages);
+    // Appel de la fonction fetchCottages lors du montage du composant
+    onMounted(fetchCottages);
 </script>
 
 <style scoped lang="scss">
-@use "@sass/_variables" as *;
-.contact {
-    text-align: center;
-    .contact_container {
-        width: 75%;
-        margin: 0 auto;
+    @use "@sass/_variables" as *;
+    .contact {
+        text-align: center;
+        .contact_container {
+            width: 75%;
+            margin: 0 auto;
 
-        form {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            form {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
 
-            .contact_input {
-                width: 100%;
-                margin: 1rem 0;
-                padding: 1rem;
-                border-radius: 1rem;
-                border: none;
-                box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+                .contact_input {
+                    width: 100%;
+                    margin: 1rem 0;
+                    padding: 1rem;
+                    border-radius: 1rem;
+                    border: none;
+                    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+                }
             }
         }
     }
-}
 </style>

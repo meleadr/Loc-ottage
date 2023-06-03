@@ -1,145 +1,22 @@
 <template>
+    <!-- SECTION CHALET -->
     <section>
-        <!-- Affichage des cottages -->
-        <ul>
-            <li v-for="cottage in cottages" :key="cottage.id">
-                {{ cottage.name }}
-            </li>
-        </ul>
-
-        <CottageCard
-            v-for="cottage in cottages"
+        <CottageCard 
+            v-for="cottage in cottages" 
             :key="cottage.id"
             :id="cottage.id"
             :name="cottage.name"
             :area="cottage.area"
-            :nbBedrooms="cottage.nbBedrooms"
-            :nbPersons="cottage.nbPersons"
+            :bedrooms="cottage.bedrooms"
+            :persons="cottage.persons"
             :description="cottage.description"
             :price="cottage.price"
             :image_url="cottage.image_url"
         />
-
-        <!-- <div class="cottage_right">
-            <div class="info">
-                <h2>Chalet Familial</h2>
-
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    delectus natus cum quod? Soluta impedit, aliquam odio
-                    facilis aperiam sapiente quasi doloribus amet obcaecati
-                    totam dolorem laborum rem eveniet inventore? Nam laborum
-                    delectus ullam rem velit? Ab nam illum dolorum iste minus
-                    dolorem optio ipsa sapiente enim et. Provident, nobis totam.
-                    Iste accusamus libero quam a mollitia quia nostrum saepe.
-                    Alias iste rerum, facere sunt eaque laborum quis ex possimus
-                    sit asperiores facilis consequuntur voluptates tempora magni
-                    non assumenda maxime aut quo autem dolorem unde excepturi
-                    laboriosam animi. Nobis, alias. Inventore consequuntur
-                    suscipit tenetur sunt voluptas totam vel quaerat assumenda
-                    at modi, earum deleniti, rerum laudantium necessitatibus,
-                    aspernatur eveniet expedita distinctio explicabo nostrum
-                    nisi? Dicta dignissimos veritatis odio? Quidem, et?
-                </p>
-
-                <CottageInfo
-                    surface="100m²"
-                    nbPersonnes="4"
-                    nbChambres="2"
-                    prix="100€"
-                />
-
-                <div class="button_container">
-                    <a class="button" href="#"> Voir plus </a>
-                </div>
-            </div>
-            <div class="image">
-                <img
-                    src="/assets/images/cottage/familial_cottage.jpeg"
-                    alt=""
-                />
-            </div>
-        </div> -->
-
-        <!-- <div class="cottage_left">
-            <div class="image">
-                <img src="/assets/images/cottage/love_cottage.jpeg" alt="" />
-            </div>
-
-            <div class="info">
-                <h2>Chalet Familial</h2>
-
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    delectus natus cum quod? Soluta impedit, aliquam odio
-                    facilis aperiam sapiente quasi doloribus amet obcaecati
-                    totam dolorem laborum rem eveniet inventore? Nam laborum
-                    delectus ullam rem velit? Ab nam illum dolorum iste minus
-                    dolorem optio ipsa sapiente enim et. Provident, nobis totam.
-                    Iste accusamus libero quam a mollitia quia nostrum saepe.
-                    Alias iste rerum, facere sunt eaque laborum quis ex possimus
-                    sit asperiores facilis consequuntur voluptates tempora magni
-                    non assumenda maxime aut quo autem dolorem unde excepturi
-                    laboriosam animi. Nobis, alias. Inventore consequuntur
-                    suscipit tenetur sunt voluptas totam vel quaerat assumenda
-                    at modi, earum deleniti, rerum laudantium necessitatibus,
-                    aspernatur eveniet expedita distinctio explicabo nostrum
-                    nisi? Dicta dignissimos veritatis odio? Quidem, et?
-                </p>
-
-                <CottageInfo
-                    surface="100m²"
-                    nbPersonnes="4"
-                    nbChambres="2"
-                    prix="100€"
-                />
-
-                <div class="button_container">
-                    <a class="button" href="#"> Voir plus </a>
-                </div>
-            </div>
-        </div> -->
-
-        <!-- <div class="cottage_right">
-            <div class="info">
-                <h2>Chalet Familial</h2>
-
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    delectus natus cum quod? Soluta impedit, aliquam odio
-                    facilis aperiam sapiente quasi doloribus amet obcaecati
-                    totam dolorem laborum rem eveniet inventore? Nam laborum
-                    delectus ullam rem velit? Ab nam illum dolorum iste minus
-                    dolorem optio ipsa sapiente enim et. Provident, nobis totam.
-                    Iste accusamus libero quam a mollitia quia nostrum saepe.
-                    Alias iste rerum, facere sunt eaque laborum quis ex possimus
-                    sit asperiores facilis consequuntur voluptates tempora magni
-                    non assumenda maxime aut quo autem dolorem unde excepturi
-                    laboriosam animi. Nobis, alias. Inventore consequuntur
-                    suscipit tenetur sunt voluptas totam vel quaerat assumenda
-                    at modi, earum deleniti, rerum laudantium necessitatibus,
-                    aspernatur eveniet expedita distinctio explicabo nostrum
-                    nisi? Dicta dignissimos veritatis odio? Quidem, et?
-                </p>
-
-                <CottageInfo
-                    surface="100m²"
-                    nbPersonnes="4"
-                    nbChambres="2"
-                    prix="100€"
-                />
-
-                <div class="button_container">
-                    <a class="button" href="#"> Voir plus </a>
-                </div>
-            </div>
-            <div class="image">
-                <img src="/assets/images/cottage/classic_cottage.jpg" alt="" />
-            </div>
-        </div> -->
     </section>
 
-    <section id="contact" class="container">
+    <!-- SECTION CONTACT -->
+    <section class="contact container">
         <h1>Contactez-nous</h1>
         <div class="contact_container">
             <form>
@@ -174,10 +51,13 @@
 </template>
 
 <script setup>
-import CottageCard from "../CottageCard.vue";
 import axios from "axios";
 import { ref, onMounted } from "vue";
 
+// Import des composants
+import CottageCard from "../CottageCard.vue";
+
+// Déclaration des variables
 const cottages = ref([]);
 
 // Fonction pour récupérer les cottages de la base de données
@@ -194,42 +74,11 @@ onMounted(fetchCottages);
 
 <style scoped lang="scss">
 @use "@sass/_variables" as *;
-
-.cottage_right,
-.cottage_left {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 2rem 0;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
-
-    .info {
-        width: 50%;
-        padding: 0 2rem;
-        color: orange;
-
-        .button_container {
-            margin: 2rem 0;
-            text-align: center;
-        }
-    }
-    .image {
-        width: 50%;
-        padding: 0 2rem;
-
-        img {
-            width: 100%;
-            height: auto;
-        }
-    }
-}
-
-#contact {
+.contact {
+    text-align: center;
     .contact_container {
         width: 75%;
+        margin: 0 auto;
 
         form {
             display: flex;

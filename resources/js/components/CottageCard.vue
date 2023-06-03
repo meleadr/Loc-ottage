@@ -1,82 +1,118 @@
 <template>
-    <div class="info">
-        <h2>{{ name }}</h2>
-
-        <p>{{ description }}</p>
-
-        <CottageInfo
-            area="{{ area }}"
-            nbPersons="{{ nbPersons }}"
-            nbBedrooms="{{ nbBedrooms }}"
-            price="{{ price }}"
-        />
-
-        <div class="button_container">
-            <a class="button" href="#">
-                Voir plus
-            </a>
+    <div class="card">
+        <div class="image" :class="{ 'image-left': id % 2 === 0, 'image-right': id % 2 === 1 }">
+            <img :src="image_url" alt="">
         </div>
-    </div>
-    <div class="image">
-        <img src="{{ image_url }}" alt="">
+
+        <div class="info" :class="{ 'info-left': id % 2 === 0, 'info-right': id % 2 === 1 }">
+            <h2>{{ name }}</h2>
+            <p>{{ description }}</p>
+
+            <CottageInfo
+                :area="area"
+                :persons="persons" 
+                :bedrooms="bedrooms"
+                :price="price"
+            />
+
+
+            <div class="button_container">
+                <a class="button" href="#">
+                    Voir plus
+                </a>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
-    import CottageInfo from "./CottageInfo.vue";
-    const props = defineProps({
-        id:{
-            type: Number,
-            required: true,
-        },
-        name: {
-            type: String,
-            required: true,
-        },
-        area: {
-            type: Number,
-            required: true,
-        },
-        nbBedrooms: {
-            type: Number,
-            required: true,
-        },
-        nbPersons: {
-            type: Number,
-            required: true,
-        },
-        description: {
-            type: String,
-            required: true,
-        },
-        price: {
-            type: Number,
-            required: true,
-        },
-        image_url: {
-            type: String,
-            required: true,
-        },
-    });
+import CottageInfo from "./CottageInfo.vue";
+
+const props = defineProps({
+    id:{
+        type: Number,
+        required: true,
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    area: {
+        type: Number,
+        required: true,
+    },
+    bedrooms: {
+        type: Number,
+        required: true,
+    },
+    persons: {
+        type: Number,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    price: {
+        type: Number,
+        required: true,
+    },
+    image_url: {
+        type: String,
+        required: true,
+    },
+});
 </script>
-
+  
 <style scoped lang="scss">
-    @use "@sass/_variables" as *;
+.card {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin: 2rem 0;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+}
 
-    .table_info {
-        margin: 2rem 0;
-        width: 100%;
-        border-radius: 20px;
-        border-collapse: collapse;
-        text-align: center;
-        background-color: grey;
+.info {
+    width: 50%;
+    padding: 0 2rem;
+    color: orange;
 
-        th, td {
-            padding: 1rem;
-        }
+&-left {
+    order: 2;
+}
 
-        .icon {
-            font-size: 2rem;
-        }
-    }
+&-right {
+    order: 1;
+}
+
+.button_container {
+    margin: 2rem 0;
+    text-align: center;
+}
+}
+
+.image {
+    width: 50%;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+&-left {
+    order: 1;
+}
+
+&-right {
+    order: 2;
+}
+
+img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
+}
 </style>

@@ -10,10 +10,10 @@
                 </tr>
 
                 <tr>
-                    <td>{{ area }}</td>
-                    <td>{{ nbPersons }}</td>
-                    <td>{{ nbBedrooms }}</td>
-                    <td>{{ price }}</td>
+                    <td>{{ area }}m²</td>
+                    <td>{{ persons }}</td>
+                    <td>{{ bedrooms }}</td>
+                    <td>{{ price }}€</td>
                 </tr>
             </table>
         </div>
@@ -26,11 +26,11 @@
             type: Number,
             required: true,
         },
-        nbPersons: {
+        persons: {
             type: Number,
             required: true,
         },
-        nbBedrooms: {
+        bedrooms: {
             type: Number,
             required: true,
         },

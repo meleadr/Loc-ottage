@@ -1,43 +1,62 @@
 <template>
-    <div class="card_info">
-        <div class="features">
-            <table class="table_info">
-                <tr>
-                    <th><i class='bx bx-area icon'></i></th>
-                    <th><i class='bx bx-user icon'></i></th>
-                    <th><i class='bx bx-bed icon' ></i></th>
-                    <th><i class='bx bx-purchase-tag-alt icon' ></i></th>
-                </tr>
+    <div class="info">
+        <h2>{{ name }}</h2>
 
-                <tr>
-                    <td>{{ surface }}</td>
-                    <td>{{ nbPersonnes }}</td>
-                    <td>{{ nbChambres }}</td>
-                    <td>{{ prix }}</td>
-                </tr>
-            </table>
+        <p>{{ description }}</p>
+
+        <CottageInfo
+            area="{{ area }}"
+            nbPersons="{{ nbPersons }}"
+            nbBedrooms="{{ nbBedrooms }}"
+            price="{{ price }}"
+        />
+
+        <div class="button_container">
+            <a class="button" href="#">
+                Voir plus
+            </a>
         </div>
+    </div>
+    <div class="image">
+        <img src="{{ image_url }}" alt="">
     </div>
 </template>
 
 <script setup>
+    import CottageInfo from "./CottageInfo.vue";
     const props = defineProps({
-        surface: {
+        id:{
             type: Number,
             required: true,
         },
-        nbPersonnes: {
+        name: {
+            type: String,
+            required: true,
+        },
+        area: {
             type: Number,
             required: true,
         },
-        nbChambres: {
+        nbBedrooms: {
             type: Number,
             required: true,
         },
-        prix: {
+        nbPersons: {
             type: Number,
             required: true,
-        },  
+        },
+        description: {
+            type: String,
+            required: true,
+        },
+        price: {
+            type: Number,
+            required: true,
+        },
+        image_url: {
+            type: String,
+            required: true,
+        },
     });
 </script>
 

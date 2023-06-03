@@ -7,7 +7,20 @@
             </li>
         </ul>
 
-        <div class="cottage_right">
+        <CottageCard
+            v-for="cottage in cottages"
+            :key="cottage.id"
+            :id="cottage.id"
+            :name="cottage.name"
+            :area="cottage.area"
+            :nbBedrooms="cottage.nbBedrooms"
+            :nbPersons="cottage.nbPersons"
+            :description="cottage.description"
+            :price="cottage.price"
+            :image_url="cottage.image_url"
+        />
+
+        <!-- <div class="cottage_right">
             <div class="info">
                 <h2>Chalet Familial</h2>
 
@@ -29,7 +42,7 @@
                     nisi? Dicta dignissimos veritatis odio? Quidem, et?
                 </p>
 
-                <CottageCard
+                <CottageInfo
                     surface="100m²"
                     nbPersonnes="4"
                     nbChambres="2"
@@ -46,9 +59,9 @@
                     alt=""
                 />
             </div>
-        </div>
+        </div> -->
 
-        <div class="cottage_left">
+        <!-- <div class="cottage_left">
             <div class="image">
                 <img src="/assets/images/cottage/love_cottage.jpeg" alt="" />
             </div>
@@ -74,7 +87,7 @@
                     nisi? Dicta dignissimos veritatis odio? Quidem, et?
                 </p>
 
-                <CottageCard
+                <CottageInfo
                     surface="100m²"
                     nbPersonnes="4"
                     nbChambres="2"
@@ -85,9 +98,9 @@
                     <a class="button" href="#"> Voir plus </a>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="cottage_right">
+        <!-- <div class="cottage_right">
             <div class="info">
                 <h2>Chalet Familial</h2>
 
@@ -109,7 +122,7 @@
                     nisi? Dicta dignissimos veritatis odio? Quidem, et?
                 </p>
 
-                <CottageCard
+                <CottageInfo
                     surface="100m²"
                     nbPersonnes="4"
                     nbChambres="2"
@@ -123,7 +136,7 @@
             <div class="image">
                 <img src="/assets/images/cottage/classic_cottage.jpg" alt="" />
             </div>
-        </div>
+        </div> -->
     </section>
 
     <section id="contact" class="container">

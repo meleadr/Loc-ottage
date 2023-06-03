@@ -9,7 +9,14 @@
                 Alias iste rerum, facere sunt eaque laborum quis ex possimus sit asperiores facilis consequuntur voluptates tempora magni non assumenda maxime aut quo autem dolorem unde excepturi laboriosam animi. Nobis, alias.
                 Inventore consequuntur suscipit tenetur sunt voluptas totam vel quaerat assumenda at modi, earum deleniti, rerum laudantium necessitatibus, aspernatur eveniet expedita distinctio explicabo nostrum nisi? Dicta dignissimos veritatis odio? Quidem, et?</p>
 
-                <div class="features">
+                <CottageCard
+                    surface="100m²"
+                    nbPersonnes="4"
+                    nbChambres="2"
+                    prix="100€"
+                />
+
+                <!-- <div class="features">
                     <table class="table_info">
                         <tr>
                             <th>Surface</th>
@@ -25,7 +32,7 @@
                             <td>100€</td>
                         </tr>
                     </table>
-                </div>
+                </div> -->
 
                 <div class="button_container">
                     <a class="button" href="#">
@@ -51,7 +58,14 @@
                 Alias iste rerum, facere sunt eaque laborum quis ex possimus sit asperiores facilis consequuntur voluptates tempora magni non assumenda maxime aut quo autem dolorem unde excepturi laboriosam animi. Nobis, alias.
                 Inventore consequuntur suscipit tenetur sunt voluptas totam vel quaerat assumenda at modi, earum deleniti, rerum laudantium necessitatibus, aspernatur eveniet expedita distinctio explicabo nostrum nisi? Dicta dignissimos veritatis odio? Quidem, et?</p>
 
-                <div class="features">
+                <CottageCard
+                    surface="100m²"
+                    nbPersonnes="4"
+                    nbChambres="2"
+                    prix="100€"
+                />
+            
+                <!-- <div class="features">
                     <table class="table_info">
                         <tr>
                             <th>Surface</th>
@@ -67,7 +81,7 @@
                             <td>100€</td>
                         </tr>
                     </table>
-                </div>
+                </div> -->
 
                 <div class="button_container">
                     <a class="button" href="#">
@@ -86,7 +100,7 @@
                 Alias iste rerum, facere sunt eaque laborum quis ex possimus sit asperiores facilis consequuntur voluptates tempora magni non assumenda maxime aut quo autem dolorem unde excepturi laboriosam animi. Nobis, alias.
                 Inventore consequuntur suscipit tenetur sunt voluptas totam vel quaerat assumenda at modi, earum deleniti, rerum laudantium necessitatibus, aspernatur eveniet expedita distinctio explicabo nostrum nisi? Dicta dignissimos veritatis odio? Quidem, et?</p>
 
-                <div class="features">
+                <!-- <div class="features">
                     <table class="table_info">
                         <tr>
                             <th>Surface</th>
@@ -102,7 +116,14 @@
                             <td>100€</td>
                         </tr>
                     </table>
-                </div>
+                </div> -->
+
+                <CottageCard
+                    surface="100m²"
+                    nbPersonnes="4"
+                    nbChambres="2"
+                    prix="100€"
+                />
 
                 <div class="button_container">
                     <a class="button" href="#">
@@ -132,6 +153,10 @@
     </section>
 </template>
 
+<script setup>
+    import CottageCard from "../CottageCard.vue";
+</script>
+
 <style scoped lang="scss">
     @use "@sass/_variables" as *;
 
@@ -149,18 +174,6 @@
             width: 50%;
             padding: 0 2rem;
             color: orange;
-
-            .table_info {
-                margin: 2rem 0;
-                width: 100%;
-                border-collapse: collapse;
-                text-align: center;
-                background-color: grey;
-
-                th, td {
-                    padding: 1rem;
-                }
-            }
 
             .button_container {
                 margin: 2rem 0;

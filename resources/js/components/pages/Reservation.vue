@@ -3,25 +3,39 @@
     <div class="container">
         <div v-show="step === 1">
             <h3>Choix des options</h3>
-            <div class="info">
-                <label>
-                    <input type="radio" value="All-in" v-model="option" />
-                    All-in
-                </label>
-                <label>
-                    <input type="radio" value="Diner" v-model="option" /> Diner
-                </label>
-                <label>
+            <div class="info options">
+                <div
+                    v-if="
+                        !optionSelected.diner && !optionSelected.petitDejeuner
+                    "
+                >
+                    <input type="checkbox" id="allin" v-model="allInSelected" />
+                    <label for="allin">All-in</label>
+                </div>
+                <div v-if="!allInSelected">
                     <input
-                        type="radio"
-                        value="Petit-Dejeuner"
-                        v-model="option"
+                        type="checkbox"
+                        id="dinner"
+                        v-model="optionSelected.diner"
                     />
-                    Petit-Dejeuner
-                </label>
-                <label>
-                    <input type="radio" value="Spa" v-model="option" /> Spa
-                </label>
+                    <label for="dinner">Diner</label>
+                </div>
+                <div v-if="!allInSelected">
+                    <input
+                        type="checkbox"
+                        id="breakfast"
+                        v-model="optionSelected.petitDejeuner"
+                    />
+                    <label for="breakfast">Petit-déjeuner</label>
+                </div>
+                <div>
+                    <input
+                        type="checkbox"
+                        id="spa"
+                        v-model="optionSelected.spa"
+                    />
+                    <label for="spa">Spa</label>
+                </div>
             </div>
             <div class="div_button">
                 <div class="button" @click="goBack">Retour</div>
@@ -107,6 +121,12 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const step = ref(1);
+const optionSelected = ref({
+    diner: false,
+    petitDejeuner: false,
+    spa: false,
+});
+const allInSelected = ref(false);
 const reservation = ref({
     name: "",
     surname: "",
@@ -176,15 +196,26 @@ h1 {
         height: 50vh;
     }
 
+    .options {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        margin-bottom: $spacing-large;
+
+        & label {
+            display: inline-flex;
+        }
+    }
+
     .div_button {
         display: flex;
         justify-content: space-between;
-        margin-top: $spacing-large;
+        // margin-top: $spacing-large;
     }
 
     .progressBar {
         width: 100%;
-        height: 10px;
+        height: 20px;
         background-color: $color-primary-dark;
         border-radius: $border-radius-default;
         margin-top: $spacing-large;

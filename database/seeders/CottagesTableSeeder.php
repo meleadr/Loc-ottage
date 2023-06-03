@@ -16,7 +16,7 @@ class CottagesTableSeeder extends Seeder
 			'persons' => 4,
 			'description' => 'Un superbe chalet familial',
 			'price' => 200,
-			'image_url' => '../../public/assets/images/cottage/cottage1.jpeg',
+			'image_url' => '/assets/images/cottage/classic_cottage.jpg',
 			'created_at' => now(),
 			'updated_at' => now(),
 		]);
@@ -28,6 +28,7 @@ class CottagesTableSeeder extends Seeder
 			'persons' => 2,
 			'description' => 'Un chalet pour les amoureux',
 			'price' => 100,
+			'image_url' => '/assets/images/cottage/love_cottage.jpeg',
 			'created_at' => now(),
 			'updated_at' => now(),
 		]);
@@ -39,6 +40,7 @@ class CottagesTableSeeder extends Seeder
 			'persons' => 6,
 			'description' => 'Un chalet pour les familles nombreuses',
 			'price' => 300,
+			'image_url' => '/assets/images/cottage/familial_cottage.jpeg',
 			'created_at' => now(),
 			'updated_at' => now(),
 		]);

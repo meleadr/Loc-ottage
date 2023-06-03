@@ -133,7 +133,7 @@
         .info {
             width: 50%;
             padding: 0 2rem;
-            color: $color-primary;
+            color: orange;
 
             .table_info {
                 margin: 2rem 0;

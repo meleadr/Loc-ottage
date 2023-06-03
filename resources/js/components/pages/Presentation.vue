@@ -1,5 +1,13 @@
 <template>
-    <section id="cottages">
+    <section>
+        <!-- Affichage des cottages -->
+        <ul>
+            <li v-for="cottage in cottages" :key="cottage.id">
+                {{ cottage.name }}
+            </li>
+        </ul>
+
+
         <div class="cottage_right">
             <div class="info">
                 <h2>Chalet Familial</h2>
@@ -23,13 +31,13 @@
                 </div>
             </div>
             <div class="image">
-                    <img src="assets/images/cottage/classic_cottage.jpg" alt="">
+                    <img src="/assets/images/cottage/familial_cottage.jpeg" alt="">
             </div>
         </div>
 
         <div class="cottage_left">
             <div class="image">
-                <img src="assets/images/cottage/familial_cottage.jpeg" alt="">
+                <img src="/assets/images/cottage/love_cottage.jpeg" alt="">
             </div>
 
             <div class="info">
@@ -78,7 +86,7 @@
                 </div>
             </div>
             <div class="image">
-                    <img src="assets/images/cottage/love_cottage.jpeg" alt="">
+                    <img src="/assets/images/cottage/classic_cottage.jpg" alt="">
             </div>
         </div>
     </section>
@@ -101,6 +109,24 @@
 
 <script setup>
     import CottageCard from "../CottageCard.vue";
+    import axios from 'axios';
+    import { ref, onMounted } from 'vue';
+
+    const cottages = ref([]);
+
+    // Fonction pour récupérer les cottages de la base de données
+    const fetchCottages = async () => {
+        try {
+            const response = await fetch('/cottages');
+            const data = await response.json();
+            cottages.value = data;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Appel de la fonction fetchCottages lors du montage du composant
+    onMounted(fetchCottages);
 </script>
 
 <style scoped lang="scss">

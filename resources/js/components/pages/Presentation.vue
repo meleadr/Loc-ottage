@@ -2,7 +2,7 @@
     <section id="cottages">
         <div class="cottage_right">
             <div class="info">
-                <h2>Chalet Famililial</h2>
+                <h2>Chalet Familial</h2>
 
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab delectus natus cum quod? Soluta impedit, aliquam odio facilis aperiam sapiente quasi doloribus amet obcaecati totam dolorem laborum rem eveniet inventore?
                 Nam laborum delectus ullam rem velit? Ab nam illum dolorum iste minus dolorem optio ipsa sapiente enim et. Provident, nobis totam. Iste accusamus libero quam a mollitia quia nostrum saepe.
@@ -15,24 +15,6 @@
                     nbChambres="2"
                     prix="100€"
                 />
-
-                <!-- <div class="features">
-                    <table class="table_info">
-                        <tr>
-                            <th>Surface</th>
-                            <th>Nombre de personnes</th>
-                            <th>Nombre de chambres</th>
-                            <th>Prix</th>
-                        </tr>
-
-                        <tr>
-                            <td>100m²</td>
-                            <td>4</td>
-                            <td>2</td>
-                            <td>100€</td>
-                        </tr>
-                    </table>
-                </div> -->
 
                 <div class="button_container">
                     <a class="button" href="#">
@@ -41,17 +23,17 @@
                 </div>
             </div>
             <div class="image">
-                    <img src="../../../../public/assets/images/cottage/cottage1.jpeg" alt="">
+                    <img src="../../../../public/assets/images/cottage/classic_cottage.jpg" alt="">
             </div>
         </div>
 
         <div class="cottage_left">
             <div class="image">
-                <img src="../../../../public/assets/images/cottage/cottage1.jpeg" alt="">
+                <img src="../../../../public/assets/images/cottage/familial_cottage.jpeg" alt="">
             </div>
 
             <div class="info">
-                <h2>Chalet Famililial</h2>
+                <h2>Chalet Familial</h2>
 
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab delectus natus cum quod? Soluta impedit, aliquam odio facilis aperiam sapiente quasi doloribus amet obcaecati totam dolorem laborum rem eveniet inventore?
                 Nam laborum delectus ullam rem velit? Ab nam illum dolorum iste minus dolorem optio ipsa sapiente enim et. Provident, nobis totam. Iste accusamus libero quam a mollitia quia nostrum saepe.
@@ -64,24 +46,6 @@
                     nbChambres="2"
                     prix="100€"
                 />
-            
-                <!-- <div class="features">
-                    <table class="table_info">
-                        <tr>
-                            <th>Surface</th>
-                            <th>Nombre de personnes</th>
-                            <th>Nombre de chambres</th>
-                            <th>Prix</th>
-                        </tr>
-
-                        <tr>
-                            <td>100m²</td>
-                            <td>4</td>
-                            <td>2</td>
-                            <td>100€</td>
-                        </tr>
-                    </table>
-                </div> -->
 
                 <div class="button_container">
                     <a class="button" href="#">
@@ -93,30 +57,12 @@
 
         <div class="cottage_right">
             <div class="info">
-                <h2>Chalet Famililial</h2>
+                <h2>Chalet Familial</h2>
 
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab delectus natus cum quod? Soluta impedit, aliquam odio facilis aperiam sapiente quasi doloribus amet obcaecati totam dolorem laborum rem eveniet inventore?
                 Nam laborum delectus ullam rem velit? Ab nam illum dolorum iste minus dolorem optio ipsa sapiente enim et. Provident, nobis totam. Iste accusamus libero quam a mollitia quia nostrum saepe.
                 Alias iste rerum, facere sunt eaque laborum quis ex possimus sit asperiores facilis consequuntur voluptates tempora magni non assumenda maxime aut quo autem dolorem unde excepturi laboriosam animi. Nobis, alias.
                 Inventore consequuntur suscipit tenetur sunt voluptas totam vel quaerat assumenda at modi, earum deleniti, rerum laudantium necessitatibus, aspernatur eveniet expedita distinctio explicabo nostrum nisi? Dicta dignissimos veritatis odio? Quidem, et?</p>
-
-                <!-- <div class="features">
-                    <table class="table_info">
-                        <tr>
-                            <th>Surface</th>
-                            <th>Nombre de personnes</th>
-                            <th>Nombre de chambres</th>
-                            <th>Prix</th>
-                        </tr>
-
-                        <tr>
-                            <td>100m²</td>
-                            <td>4</td>
-                            <td>2</td>
-                            <td>100€</td>
-                        </tr>
-                    </table>
-                </div> -->
 
                 <CottageCard
                     surface="100m²"
@@ -132,7 +78,7 @@
                 </div>
             </div>
             <div class="image">
-                    <img src="../../../../public/assets/images/cottage/cottage1.jpeg" alt="">
+                    <img src="../../../../public/assets/images/cottage/love_cottage.jpeg" alt="">
             </div>
         </div>
     </section>

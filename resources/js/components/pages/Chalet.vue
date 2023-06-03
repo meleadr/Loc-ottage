@@ -4,15 +4,17 @@
         <div class="chalet__left">
             <h1>{{ chalet.title }}</h1>
             <img src="/assets/images/cottage/chalet.jpg" alt="Chalet" />
+            <div class="chalet__info">
+                <p><strong>Taille:</strong> {{ chalet.size }} m2</p>
+                <p>
+                    <strong>Personnes:</strong>
+                    {{ chalet.persons }} personnes
+                </p>
+                <p><strong>Chambre:</strong> {{ chalet.bedrooms }}</p>
+                <p><strong>Prix par nuit:</strong> {{ chalet.price }} €</p>
+            </div>
         </div>
-        <div class="chalet__info">
-            <p><strong>Taille:</strong> {{ chalet.size }} m2</p>
-            <p>
-                <strong>Personnes:</strong>
-                {{ chalet.persons }} personnes
-            </p>
-            <p><strong>Chambre:</strong> {{ chalet.bedrooms }}</p>
-            <p><strong>Prix par nuit:</strong> {{ chalet.price }} €</p>
+        <div class="chalet__right">
             <div class="chalet__info__description">
                 <p>{{ chalet.description }}</p>
             </div>
@@ -38,7 +40,6 @@
                     </template>
                 </VueDatePicker>
             </div>
-
             <div class="chalet__book">
                 <p class="chalet__book__price">
                     <strong>Prix total:</strong> {{ totalPrice }} €
@@ -99,8 +100,8 @@ const goReservation = () => {
     if (date.start && date.end) {
         router.push({
             name: "Reservation",
-            params: {
-                chalet: chalet.value,
+            query: {
+                chalet: chalet.value.title,
                 startDate: date.start,
                 endDate: date.end,
                 totalPrice: totalPrice.value,
@@ -124,11 +125,11 @@ const goReservation = () => {
         width: 50vw;
         h1 {
             font-size: $font-size-large;
-            color: $color-primary;
+            color: $color-secondary;
             margin-bottom: $spacing-default;
 
             &:hover {
-                color: $color-primary-hover;
+                color: $color-secondary-hover;
             }
         }
 
@@ -139,17 +140,11 @@ const goReservation = () => {
         }
     }
 
-    &__info {
+    &__right {
         width: 50vw;
         font-size: $font-size-default;
         color: $color-text-dark;
         line-height: 1.5;
-
-        &__description {
-            font-size: $font-size-default;
-            color: $color-text-light;
-            margin-top: $spacing-large;
-        }
 
         p {
             margin-bottom: $spacing-small;
@@ -162,6 +157,17 @@ const goReservation = () => {
                 color: $color-secondary-hover;
             }
         }
+    }
+
+    &__info {
+        display: inline-flex;
+        margin-bottom: $spacing-large;
+    }
+
+    &__description {
+        font-size: $font-size-default;
+        color: $color-text-light;
+        margin-top: $spacing-large;
     }
 
     &__calendar {

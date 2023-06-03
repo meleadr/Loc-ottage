@@ -3,7 +3,7 @@
     <div class="chalet">
         <div class="chalet__left">
             <h1>{{ chalet.title }}</h1>
-            <img src="/images/chalet.jpg" alt="Chalet" />
+            <img src="/assets/images/cottage/chalet.jpg" alt="Chalet" />
         </div>
         <div class="chalet__info">
             <p><strong>Taille:</strong> {{ chalet.size }} m2</p>
@@ -25,6 +25,13 @@
                     :disabled-dates="disabledDates"
                     :enable-time-picker="false"
                 ></VueDatePicker>
+            </div>
+
+            <div class="chalet__book">
+                <button class="btn btn--primary">Réserver</button>
+                <p class="chalet__book__price">
+                    <strong>Prix total:</strong> {{ chalet.price }} €
+                </p>
             </div>
         </div>
     </div>
@@ -112,6 +119,22 @@ const chalet = ref({
             &:hover {
                 color: $color-secondary-hover;
             }
+        }
+    }
+
+    &__calendar {
+        margin-top: $spacing-large;
+    }
+
+    &__book {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: $spacing-large;
+
+        &__price {
+            font-size: $font-size-large;
+            color: $color-primary;
         }
     }
 }

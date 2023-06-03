@@ -1,9 +1,8 @@
 <template>
-    <a href="/chalet" class="button">Retour</a>
     <div class="chalet">
         <div class="chalet__left">
             <h1>{{ chalet.title }}</h1>
-            <img src="/assets/images/cottage/chalet.jpg" alt="Chalet" />
+            <img src="/assets/images/cottage/chalet.jpg" :alt="chalet.title" />
             <div class="chalet__info">
                 <p><strong>Taille:</strong> {{ chalet.size }} m2</p>
                 <p>
@@ -13,6 +12,7 @@
                 <p><strong>Chambre:</strong> {{ chalet.bedrooms }}</p>
                 <p><strong>Prix par nuit:</strong> {{ chalet.price }} €</p>
             </div>
+            <a href="/" class="button">Retour</a>
         </div>
         <div class="chalet__right">
             <div class="chalet__info__description">
@@ -35,13 +35,19 @@
                             @click="selectCurrentDate()"
                             title="Select current date"
                         >
-                            <img class="slot-icon" src="/logo.png" />
+                            <img
+                                class="slot-icon"
+                                src="/assets/images/logo.png"
+                            />
                         </span>
                     </template>
                 </VueDatePicker>
             </div>
             <div class="chalet__book">
-                <p class="chalet__book__price">
+                <p class="error" v-show="error">
+                    {{ error }}
+                </p>
+                <p class="chalet__book__price" v-show="totalPrice != 0">
                     <strong>Prix total:</strong> {{ totalPrice }} €
                 </p>
                 <div class="button" @click="goReservation()">Réserver</div>
@@ -80,6 +86,8 @@ const chalet = ref({
         "A lovely cottage situated in a serene and peaceful environment...",
 });
 
+const error = ref(null);
+
 const date = reactive({ start: null, end: null });
 
 const handleDate = (modelData) => {
@@ -91,7 +99,10 @@ const totalPrice = computed(() => {
     if (date.start && date.end) {
         const diffTime = Math.abs(date.end - date.start);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // calculate the difference in days
+        error.value = null;
         return diffDays * chalet.value.price;
+    } else {
+        error.value = "Veuillez selectionner une date";
     }
     return 0;
 });
@@ -124,7 +135,6 @@ const goReservation = () => {
     &__left {
         width: 50vw;
         h1 {
-            font-size: $font-size-large;
             color: $color-secondary;
             margin-bottom: $spacing-default;
 
@@ -190,7 +200,7 @@ const goReservation = () => {
 }
 
 .slot-icon {
-    height: 20px;
+    height: 40px;
     width: auto;
     cursor: pointer;
 }

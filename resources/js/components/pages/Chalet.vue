@@ -111,7 +111,7 @@ const goReservation = () => {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @use "@sass/_variables" as *;
 
 .chalet {
@@ -147,6 +147,7 @@ const goReservation = () => {
         line-height: 1.5;
 
         p {
+            color: $color-primary-dark;
             margin-bottom: $spacing-small;
         }
 

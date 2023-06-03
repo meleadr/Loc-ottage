@@ -6,6 +6,10 @@ $color-secondary: #b87333;
 $color-primary-hover: darken($color-primary, 10%);
 $color-secondary-hover: darken($color-secondary, 10%);
 
+// Dark
+$color-primary-dark: darken($color-primary, 20%);
+$color-secondary-dark: darken($color-secondary, 20%);
+
 // Text Colors
 $color-text-dark: #333;
 $color-text-light: #fff;

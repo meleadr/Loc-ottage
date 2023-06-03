@@ -1,5 +1,5 @@
 <template>
-    <NavBar />
+    <a href="/chalet" class="button">Retour</a>
     <div class="chalet">
         <div class="chalet__left">
             <h1>{{ chalet.title }}</h1>
@@ -43,7 +43,7 @@
                 <p class="chalet__book__price">
                     <strong>Prix total:</strong> {{ totalPrice }} €
                 </p>
-                <button class="button">Réserver</button>
+                <div class="button" @click="goReservation()">Réserver</div>
             </div>
         </div>
     </div>
@@ -51,7 +51,6 @@
 
 <script setup>
 import { ref, computed, reactive } from "vue";
-import NavBar from "../NavBar.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
@@ -92,6 +91,12 @@ const totalPrice = computed(() => {
     }
     return 0;
 });
+
+const goReservation = () => {
+    if (date.start && date.end) {
+        window.location.href = "/chalet/reservation";
+    }
+};
 </script>
 
 <style lang="scss">
@@ -101,8 +106,6 @@ const totalPrice = computed(() => {
     display: flex;
     color: $color-text-dark;
     background-color: $color-background-light;
-    border: 1px solid $color-border-dark;
-    border-radius: $border-radius-default;
     padding: $spacing-default;
     font-family: $font-family-default;
 

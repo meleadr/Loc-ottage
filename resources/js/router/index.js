@@ -5,6 +5,7 @@ import Admin from "../components/pages/Admin.vue";
 import Presentation from "../components/pages/Presentation.vue";
 import Login from "../components/pages/Login.vue";
 import Chalet from "../components/pages/Chalet.vue";
+import Reservation from "../components/pages/Reservation.vue";
 
 // NotFound
 import NotFound from "../components/pages/NotFound.vue";
@@ -19,6 +20,11 @@ const routes = [
         path: "/chalet/:id",
         Name: "Chalet",
         component: Chalet,
+    },
+    {
+        path: "/chalet/reservation",
+        Name: "Reservation",
+        component: Reservation,
     },
     {
         path: "/admin",

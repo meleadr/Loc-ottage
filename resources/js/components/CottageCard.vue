@@ -15,9 +15,8 @@
                 :price="price"
             />
 
-
             <div class="button_container">
-                <a class="button" href="#">
+                <a class="button" href="Chalet">
                     Voir plus
                 </a>
             </div>
@@ -26,6 +25,7 @@
 </template>
 
 <script setup>
+// Import des composants
 import CottageInfo from "./CottageInfo.vue";
 
 const props = defineProps({

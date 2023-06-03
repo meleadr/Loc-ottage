@@ -1,4 +1,8 @@
 <template>
+    <div class="div_button">
+        <div class="button" @click="goBack">Retour sur le site</div>
+        <div class="button" @click="logout">Se déconnecter</div>
+    </div>
     <div class="container">
         <h1>Admin Dashboard</h1>
         <div class="content">
@@ -107,6 +111,11 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRoute();
+const router = useRouter();
 
 const reservations = ref([]);
 const chalets = ref([]);
@@ -116,6 +125,15 @@ const selectedChalet = ref("");
 const selectedStatus = ref("");
 const sortOrder = ref("");
 const filteredReservations = ref([]);
+
+const goBack = () => {
+    router.push("/");
+};
+
+const logout = () => {
+    sessionStorage.removeItem("token");
+    router.push("/admin/login");
+};
 
 onMounted(async () => {
     // Fetch data from API and populate reservations, chalets and statuses...
@@ -148,6 +166,17 @@ const getClassForReservation = (reservation) => {
 
 <style scoped lang="scss">
 @use "@sass/_variables" as *;
+
+.div_button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: $spacing-large;
+    margin-top: $spacing-large;
+    margin-left: $spacing-large;
+    margin-right: $spacing-large;
+}
+
 div {
     display: flex;
     flex-direction: column;

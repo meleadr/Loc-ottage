@@ -7,8 +7,21 @@
             </li>
         </ul>
 
+            <CottageCard 
+                v-for="cottage in cottages" 
+                :key="cottage.id"
+                :id="cottage.id"
+                :name="cottage.name"
+                :area="cottage.area"
+                :nbBedrooms="cottage.nbBedrooms"
+                :nbPersons="cottage.nbPersons"
+                :description="cottage.description"
+                :price="cottage.price"
+                :image_url="cottage.image_url"
+            />
 
-        <div class="cottage_right">
+
+        <!-- <div class="cottage_right">
             <div class="info">
                 <h2>Chalet Familial</h2>
 
@@ -17,7 +30,7 @@
                 Alias iste rerum, facere sunt eaque laborum quis ex possimus sit asperiores facilis consequuntur voluptates tempora magni non assumenda maxime aut quo autem dolorem unde excepturi laboriosam animi. Nobis, alias.
                 Inventore consequuntur suscipit tenetur sunt voluptas totam vel quaerat assumenda at modi, earum deleniti, rerum laudantium necessitatibus, aspernatur eveniet expedita distinctio explicabo nostrum nisi? Dicta dignissimos veritatis odio? Quidem, et?</p>
 
-                <CottageCard
+                <CottageInfo
                     surface="100m²"
                     nbPersonnes="4"
                     nbChambres="2"
@@ -33,9 +46,9 @@
             <div class="image">
                     <img src="/assets/images/cottage/familial_cottage.jpeg" alt="">
             </div>
-        </div>
+        </div> -->
 
-        <div class="cottage_left">
+        <!-- <div class="cottage_left">
             <div class="image">
                 <img src="/assets/images/cottage/love_cottage.jpeg" alt="">
             </div>
@@ -48,7 +61,7 @@
                 Alias iste rerum, facere sunt eaque laborum quis ex possimus sit asperiores facilis consequuntur voluptates tempora magni non assumenda maxime aut quo autem dolorem unde excepturi laboriosam animi. Nobis, alias.
                 Inventore consequuntur suscipit tenetur sunt voluptas totam vel quaerat assumenda at modi, earum deleniti, rerum laudantium necessitatibus, aspernatur eveniet expedita distinctio explicabo nostrum nisi? Dicta dignissimos veritatis odio? Quidem, et?</p>
 
-                <CottageCard
+                <CottageInfo
                     surface="100m²"
                     nbPersonnes="4"
                     nbChambres="2"
@@ -61,9 +74,9 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="cottage_right">
+        <!-- <div class="cottage_right">
             <div class="info">
                 <h2>Chalet Familial</h2>
 
@@ -72,7 +85,7 @@
                 Alias iste rerum, facere sunt eaque laborum quis ex possimus sit asperiores facilis consequuntur voluptates tempora magni non assumenda maxime aut quo autem dolorem unde excepturi laboriosam animi. Nobis, alias.
                 Inventore consequuntur suscipit tenetur sunt voluptas totam vel quaerat assumenda at modi, earum deleniti, rerum laudantium necessitatibus, aspernatur eveniet expedita distinctio explicabo nostrum nisi? Dicta dignissimos veritatis odio? Quidem, et?</p>
 
-                <CottageCard
+                <CottageInfo
                     surface="100m²"
                     nbPersonnes="4"
                     nbChambres="2"
@@ -88,7 +101,7 @@
             <div class="image">
                     <img src="/assets/images/cottage/classic_cottage.jpg" alt="">
             </div>
-        </div>
+        </div> -->
     </section>
 
     <section id="contact" class="container">

@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\CottagesController;
+use App\Http\Controllers\API\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +23,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('/auth/login', 'login');
+});
+
+Route::controller(CottagesController::class)->group(function () {
+	Route::get('/cottages/getAllCottages', 'getAllCottages');
+});
+
+Route::controller(BookingController::class)->group(function () {
+	Route::get('/bookings/getAllBookings', 'getAllBookings');
 });

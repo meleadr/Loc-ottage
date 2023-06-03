@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Models\Cottage;
-use Illuminate\Http\Request;
 
-class NomDuControleur extends Controller
+class CottagesController extends Controller
 {
-    public function index()
-    {
-        $cottages = Cottage::all();
-        return $cottages;
-    }
+    public function getAllCottages()
+	{
+		$cottages = Cottage::all();
+		return response()->json($cottages);
+	}
 }

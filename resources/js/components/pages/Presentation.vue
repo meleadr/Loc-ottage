@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section id="cottages">
         <div class="cottage_right">
             <div class="info">
                 <h2>Chalet Famililial</h2>
@@ -115,6 +115,21 @@
             </div>
         </div>
     </section>
+
+    <section id="contact" class="container">
+        <h1>Contactez-nous</h1>
+        <div class="contact_container">
+            <form>
+                <input name="email" type="text" placeholder="Email" class="contact_input" required>
+                <input name="objet" type="text" placeholder="Objet" class="contact_input" required>
+              
+
+                <textarea name="texte" cols="0" rows="10" placeholder="Message" class="contact_input" required></textarea>
+
+                <input type="submit" value="Envoyer" class="button">
+            </form>
+        </div>
+    </section>
 </template>
 
 <style scoped lang="scss">
@@ -159,6 +174,29 @@
             img {
                 width: 100%;
                 height: auto;
+            }
+        }
+
+    }
+
+    #contact{
+        .contact_container{
+            width: 75%;
+
+            form{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                .contact_input{
+                    width: 100%;
+                    margin: 1rem 0;
+                    padding: 1rem;
+                    border-radius: 1rem;
+                    border: none;
+                    box-shadow: 0 0 1rem rgba(0, 0, 0, .2);
+                }
             }
         }
 

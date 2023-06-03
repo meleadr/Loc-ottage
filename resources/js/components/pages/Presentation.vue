@@ -1,8 +1,28 @@
 <template>
     <section>
-        <div class="cottage_right">
+        <!-- Affichage des cottages -->
+        <ul>
+            <li v-for="cottage in cottages" :key="cottage.id">
+                {{ cottage.name }}
+            </li>
+        </ul>
+
+        <CottageCard
+            v-for="cottage in cottages"
+            :key="cottage.id"
+            :id="cottage.id"
+            :name="cottage.name"
+            :area="cottage.area"
+            :nbBedrooms="cottage.nbBedrooms"
+            :nbPersons="cottage.nbPersons"
+            :description="cottage.description"
+            :price="cottage.price"
+            :image_url="cottage.image_url"
+        />
+
+        <!-- <div class="cottage_right">
             <div class="info">
-                <h2>Chalet Famililial</h2>
+                <h2>Chalet Familial</h2>
 
                 <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
@@ -22,23 +42,12 @@
                     nisi? Dicta dignissimos veritatis odio? Quidem, et?
                 </p>
 
-                <div class="features">
-                    <table class="table_info">
-                        <tr>
-                            <th>Surface</th>
-                            <th>Nombre de personnes</th>
-                            <th>Nombre de chambres</th>
-                            <th>Prix</th>
-                        </tr>
-
-                        <tr>
-                            <td>100m²</td>
-                            <td>4</td>
-                            <td>2</td>
-                            <td>100€</td>
-                        </tr>
-                    </table>
-                </div>
+                <CottageInfo
+                    surface="100m²"
+                    nbPersonnes="4"
+                    nbChambres="2"
+                    prix="100€"
+                />
 
                 <div class="button_container">
                     <a class="button" href="#"> Voir plus </a>
@@ -46,22 +55,19 @@
             </div>
             <div class="image">
                 <img
-                    src="../../../../public/assets/images/cottage/cottage1.jpeg"
+                    src="/assets/images/cottage/familial_cottage.jpeg"
                     alt=""
                 />
             </div>
-        </div>
+        </div> -->
 
-        <div class="cottage_left">
+        <!-- <div class="cottage_left">
             <div class="image">
-                <img
-                    src="../../../../public/assets/images/cottage/cottage1.jpeg"
-                    alt=""
-                />
+                <img src="/assets/images/cottage/love_cottage.jpeg" alt="" />
             </div>
 
             <div class="info">
-                <h2>Chalet Famililial</h2>
+                <h2>Chalet Familial</h2>
 
                 <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
@@ -81,33 +87,22 @@
                     nisi? Dicta dignissimos veritatis odio? Quidem, et?
                 </p>
 
-                <div class="features">
-                    <table class="table_info">
-                        <tr>
-                            <th>Surface</th>
-                            <th>Nombre de personnes</th>
-                            <th>Nombre de chambres</th>
-                            <th>Prix</th>
-                        </tr>
-
-                        <tr>
-                            <td>100m²</td>
-                            <td>4</td>
-                            <td>2</td>
-                            <td>100€</td>
-                        </tr>
-                    </table>
-                </div>
+                <CottageInfo
+                    surface="100m²"
+                    nbPersonnes="4"
+                    nbChambres="2"
+                    prix="100€"
+                />
 
                 <div class="button_container">
                     <a class="button" href="#"> Voir plus </a>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="cottage_right">
+        <!-- <div class="cottage_right">
             <div class="info">
-                <h2>Chalet Famililial</h2>
+                <h2>Chalet Familial</h2>
 
                 <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
@@ -127,37 +122,75 @@
                     nisi? Dicta dignissimos veritatis odio? Quidem, et?
                 </p>
 
-                <div class="features">
-                    <table class="table_info">
-                        <tr>
-                            <th>Surface</th>
-                            <th>Nombre de personnes</th>
-                            <th>Nombre de chambres</th>
-                            <th>Prix</th>
-                        </tr>
-
-                        <tr>
-                            <td>100m²</td>
-                            <td>4</td>
-                            <td>2</td>
-                            <td>100€</td>
-                        </tr>
-                    </table>
-                </div>
+                <CottageInfo
+                    surface="100m²"
+                    nbPersonnes="4"
+                    nbChambres="2"
+                    prix="100€"
+                />
 
                 <div class="button_container">
                     <a class="button" href="#"> Voir plus </a>
                 </div>
             </div>
             <div class="image">
-                <img
-                    src="../../../../public/assets/images/cottage/cottage1.jpeg"
-                    alt=""
-                />
+                <img src="/assets/images/cottage/classic_cottage.jpg" alt="" />
             </div>
+        </div> -->
+    </section>
+
+    <section id="contact" class="container">
+        <h1>Contactez-nous</h1>
+        <div class="contact_container">
+            <form>
+                <input
+                    name="email"
+                    type="text"
+                    placeholder="Email"
+                    class="contact_input"
+                    required
+                />
+                <input
+                    name="objet"
+                    type="text"
+                    placeholder="Objet"
+                    class="contact_input"
+                    required
+                />
+
+                <textarea
+                    name="texte"
+                    cols="0"
+                    rows="10"
+                    placeholder="Message"
+                    class="contact_input"
+                    required
+                ></textarea>
+
+                <input type="submit" value="Envoyer" class="button" />
+            </form>
         </div>
     </section>
 </template>
+
+<script setup>
+import CottageCard from "../CottageCard.vue";
+import axios from "axios";
+import { ref, onMounted } from "vue";
+
+const cottages = ref([]);
+
+// Fonction pour récupérer les cottages de la base de données
+const fetchCottages = async () => {
+    // use axios to fetch data from the API
+    const response = await axios.get("/api/cottages/getAllCottages");
+    // set the value of the cottages variable to the data from the API
+    cottages.value = response.data;
+};
+
+// Appel de la fonction fetchCottages lors du montage du composant
+onMounted(fetchCottages);
+</script>
 
 <style scoped lang="scss">
 @use "@sass/_variables" as *;
@@ -203,6 +236,28 @@
         img {
             width: 100%;
             height: auto;
+        }
+    }
+}
+
+#contact {
+    .contact_container {
+        width: 75%;
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .contact_input {
+                width: 100%;
+                margin: 1rem 0;
+                padding: 1rem;
+                border-radius: 1rem;
+                border: none;
+                box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+            }
         }
     }
 }

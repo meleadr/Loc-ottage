@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CottagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,6 @@ Route::get("/", function () {
 Route::get("/{pathMatch}", function () {
     return view("welcome");
 })->where("pathMatch", ".*");
+
+
+Route::get('/cottages', [CottagesController::class, 'index']);

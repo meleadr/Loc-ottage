@@ -3,12 +3,20 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Cottage;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CottageFactory>
  */
 class CottageFactory extends Factory
 {
+	/**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Cottage::class;
+
     /**
      * Define the model's default state.
      *

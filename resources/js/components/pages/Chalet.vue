@@ -21,24 +21,36 @@
                 <VueDatePicker
                     v-model="date"
                     range
+                    min-range="1"
                     inline
+                    auto-apply
                     :disabled-dates="disabledDates"
                     :enable-time-picker="false"
-                ></VueDatePicker>
+                    @update:model-value="handleDate"
+                >
+                    <template #action-extra="{ selectCurrentDate }">
+                        <span
+                            @click="selectCurrentDate()"
+                            title="Select current date"
+                        >
+                            <img class="slot-icon" src="/logo.png" />
+                        </span>
+                    </template>
+                </VueDatePicker>
             </div>
 
             <div class="chalet__book">
-                <button class="btn btn--primary">Réserver</button>
                 <p class="chalet__book__price">
-                    <strong>Prix total:</strong> {{ chalet.price }} €
+                    <strong>Prix total:</strong> {{ totalPrice }} €
                 </p>
+                <button class="button">Réserver</button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 import NavBar from "../NavBar.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
@@ -63,6 +75,22 @@ const chalet = ref({
     price: 150,
     description:
         "A lovely cottage situated in a serene and peaceful environment...",
+});
+
+const date = reactive({ start: null, end: null });
+
+const handleDate = (modelData) => {
+    date.start = modelData[0];
+    date.end = modelData[1];
+};
+
+const totalPrice = computed(() => {
+    if (date.start && date.end) {
+        const diffTime = Math.abs(date.end - date.start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // calculate the difference in days
+        return diffDays * chalet.value.price;
+    }
+    return 0;
 });
 </script>
 
@@ -128,14 +156,21 @@ const chalet = ref({
 
     &__book {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
-        align-items: center;
         margin-top: $spacing-large;
 
         &__price {
             font-size: $font-size-large;
             color: $color-primary;
+            margin-bottom: $spacing-default;
         }
     }
+}
+
+.slot-icon {
+    height: 20px;
+    width: auto;
+    cursor: pointer;
 }
 </style>

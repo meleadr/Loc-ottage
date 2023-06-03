@@ -75,7 +75,7 @@
                                 @click="
                                     updateReservationStatus(
                                         reservation,
-                                        'pending'
+                                        'En attente'
                                     )
                                 "
                             >
@@ -89,14 +89,14 @@
                                     )
                                 "
                             >
-                                Confirm
+                                Confirmé
                             </button>
                             <button
                                 @click="
                                     updateReservationStatus(reservation, 'paid')
                                 "
                             >
-                                Mark as Paid
+                                Marqué comme payé
                             </button>
                             <button @click="cancelReservation(reservation)">
                                 Cancel
@@ -110,7 +110,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 
@@ -124,7 +124,6 @@ const searchText = ref("");
 const selectedChalet = ref("");
 const selectedStatus = ref("");
 const sortOrder = ref("");
-const filteredReservations = ref([]);
 
 const goBack = () => {
     router.push("/");
@@ -139,16 +138,58 @@ onMounted(async () => {
     // Fetch data from API and populate reservations, chalets and statuses...
 });
 
+const filteredReservations = computed(() => {
+    let result = reservations.value;
+
+    if (searchQuery.value) {
+        result = performSearch(result);
+    }
+
+    if (filterOption.value) {
+        result = performFilter(result);
+    }
+
+    if (sortOption.value) {
+        result = performSort(result);
+    }
+
+    return result;
+});
+
 const performSearch = () => {
-    // Implement the logic for search
+    return reservations.filter(
+        (reservation) =>
+            reservation.name.includes(searchQuery.value) ||
+            reservation.email.includes(searchQuery.value)
+    );
 };
 
 const performFilter = () => {
-    // Implement the logic for filter
+    switch (filterOption.value) {
+        case "status":
+            return reservations.filter(
+                (reservation) => reservation.status === "paid"
+            );
+        case "chalet":
+            return reservations.filter(
+                (reservation) => reservation.chalet === "chaletName"
+            );
+        default:
+            return reservations;
+    }
 };
 
 const performSort = () => {
-    // Implement the logic for sort
+    switch (sortOption.value) {
+        case "name":
+            return reservations.sort((a, b) => a.name.localeCompare(b.name));
+        case "date":
+            return reservations.sort(
+                (a, b) => new Date(a.date) - new Date(b.date)
+            );
+        default:
+            return reservations;
+    }
 };
 
 const updateReservationStatus = async (reservation, status) => {

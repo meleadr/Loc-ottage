@@ -13,22 +13,23 @@ import NotFound from "../components/pages/NotFound.vue";
 const routes = [
     {
         path: "/",
-        Name: "Presentation",
+        name: "Presentation",
         component: Presentation,
     },
     {
         path: "/chalet/:id",
-        Name: "Chalet",
+        name: "Chalet",
         component: Chalet,
     },
     {
         path: "/chalet/reservation",
-        Name: "Reservation",
+        name: "Reservation",
         component: Reservation,
+        props: true,
     },
     {
         path: "/admin",
-        Name: "Admin",
+        name: "Admin",
         component: Admin,
         meta: {
             requiresAuth: true,
@@ -36,12 +37,12 @@ const routes = [
     },
     {
         path: "/admin/login",
-        Name: "Login",
+        name: "Login",
         component: Login,
     },
     {
         path: "/:pathMatch(.*)*",
-        Name: "NotFound",
+        name: "NotFound",
         component: NotFound,
     },
 ];

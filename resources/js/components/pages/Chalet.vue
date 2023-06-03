@@ -51,8 +51,11 @@
 
 <script setup>
 import { ref, computed, reactive } from "vue";
+import { useRouter } from "vue-router";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+
+const router = useRouter();
 
 const disabledDates = computed(() => {
     const today = new Date();
@@ -94,7 +97,15 @@ const totalPrice = computed(() => {
 
 const goReservation = () => {
     if (date.start && date.end) {
-        window.location.href = "/chalet/reservation";
+        router.push({
+            name: "Reservation",
+            params: {
+                chalet: chalet.value,
+                startDate: date.start,
+                endDate: date.end,
+                totalPrice: totalPrice.value,
+            },
+        });
     }
 };
 </script>

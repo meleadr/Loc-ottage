@@ -37,10 +37,6 @@
                     <label for="spa">Spa</label>
                 </div>
             </div>
-            <div class="div_button">
-                <div class="button" @click="goBack">Retour</div>
-                <div class="button" @click="step++">Suivant</div>
-            </div>
         </div>
 
         <div v-show="step === 2">
@@ -65,10 +61,6 @@
                     />
                 </label>
             </div>
-            <div class="div_button">
-                <div class="button" @click="step--">Retour</div>
-                <div class="button" @click="step++">Suivant</div>
-            </div>
         </div>
 
         <div v-show="step === 3">
@@ -91,35 +83,60 @@
                     <input v-model="reservation.phone" type="tel" required />
                 </label>
             </div>
-            <div class="div_button">
-                <div class="button" @click="step--">Retour</div>
-                <div class="button" @click="step++">Suivant</div>
-            </div>
         </div>
 
         <div v-show="step === 4">
             <h3>Recapitulatif de la reservation</h3>
-            <div class="info">
+            <div class="info recap">
                 <p><strong>Chalet:</strong> {{ chalet }}</p>
                 <p><strong>Date de debut:</strong> {{ startDate }}</p>
                 <p><strong>Date de fin:</strong> {{ endDate }}</p>
                 <p><strong>Prix total:</strong> {{ totalPrice }} €</p>
-            </div>
-            <div class="div_button">
-                <div class="button" @click="step--">Retour</div>
-                <div class="button" @click="submitReservation">Valider</div>
+                <p><strong>Options:</strong></p>
+                <ul>
+                    <li v-if="allInSelected">All-in</li>
+                    <li v-else-if="optionSelected.diner">Diner</li>
+                    <li v-else-if="optionSelected.petitDejeuner">
+                        Petit-déjeuner
+                    </li>
+                    <li v-else-if="optionSelected.spa">Spa</li>
+                    <li v-else>Aucune</li>
+                </ul>
+                <p>
+                    <strong>Nombre d'adultes:</strong> {{ reservation.adult }}
+                </p>
+                <p>
+                    <strong>Nombre d'enfants:</strong>
+                    {{ reservation.children }}
+                </p>
+                <p><strong>Prenom:</strong> {{ reservation.name }}</p>
+                <p><strong>Nom:</strong> {{ reservation.surname }}</p>
+                <p><strong>Email:</strong> {{ reservation.email }}</p>
+                <p><strong>Téléphone:</strong> {{ reservation.phone }}</p>
             </div>
         </div>
 
         <div class="progressBar" :style="{ width: progressBarWidth() }"></div>
+        <div class="div_button">
+            <div class="button" @click="step > 1 ? step-- : goBack()">
+                Retour
+            </div>
+            <div
+                class="button"
+                @click="step < 4 ? step++ : submitReservation()"
+            >
+                {{ step < 4 ? "Suivant" : "Valider" }}
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 const step = ref(1);
 const optionSelected = ref({
     diner: false,
@@ -146,7 +163,7 @@ const submitReservation = () => {
 };
 
 const goBack = () => {
-    window.history.back();
+    router.go(-1);
 };
 
 const progressBarWidth = () => {
@@ -193,14 +210,30 @@ h1 {
 
     .info {
         padding: $spacing-large;
-        height: 50vh;
+        min-height: 50vh;
+        overflow: scroll;
+
+        p {
+            strong {
+                font-size: $font-size-large;
+                color: $color-secondary;
+            }
+        }
+    }
+
+    .recap {
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: $spacing-small;
+            margin-bottom: $spacing-small;
+        }
     }
 
     .options {
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        margin-bottom: $spacing-large;
 
         & label {
             display: inline-flex;
@@ -210,7 +243,7 @@ h1 {
     .div_button {
         display: flex;
         justify-content: space-between;
-        // margin-top: $spacing-large;
+        margin-top: $spacing-large;
     }
 
     .progressBar {

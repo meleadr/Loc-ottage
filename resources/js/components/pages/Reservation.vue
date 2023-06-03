@@ -138,12 +138,14 @@ import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
 const step = ref(1);
+
 const optionSelected = ref({
     diner: false,
     petitDejeuner: false,
     spa: false,
 });
 const allInSelected = ref(false);
+
 const reservation = ref({
     name: "",
     surname: "",

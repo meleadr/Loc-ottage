@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('cottages', function (Blueprint $table) {
             $table->id();
-			$table->string('name');
-			$table->integer('area');
-			$table->integer('bedrooms');
-			$table->integer('persons');
-			$table->string('description');
-			$table->integer('price');
+            $table->string('name');
+            $table->integer('area');
+            $table->integer('bedrooms');
+            $table->integer('persons');
+            $table->string('description');
+            $table->integer('price');
+            $table->string('image_url');
             $table->timestamps();
         });
     }

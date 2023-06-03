@@ -7,18 +7,19 @@ use Illuminate\Database\Seeder;
 
 class CottagesTableSeeder extends Seeder
 {
-    public function run()
-    {
-        DB::table('cottages')->insert([
-            'name' => 'Chamille',
-            'area' => 100,
-            'bedrooms' => 2,
-            'persons' => 4,
-            'description' => 'Un superbe chalet familial',
-            'price' => 200,
+	public function run()
+	{
+		DB::table('cottages')->insert([
+			'name' => 'Chamille',
+			'area' => 100,
+			'bedrooms' => 2,
+			'persons' => 4,
+			'description' => 'Un superbe chalet familial',
+			'price' => 200,
+			'image_url' => '../../public/assets/images/cottage/cottage1.jpeg',
 			'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+			'updated_at' => now(),
+		]);
 
 		DB::table('cottages')->insert([
 			'name' => 'Love',
@@ -28,7 +29,7 @@ class CottagesTableSeeder extends Seeder
 			'description' => 'Un chalet pour les amoureux',
 			'price' => 100,
 			'created_at' => now(),
-            'updated_at' => now(),
+			'updated_at' => now(),
 		]);
 
 		DB::table('cottages')->insert([
@@ -39,7 +40,7 @@ class CottagesTableSeeder extends Seeder
 			'description' => 'Un chalet pour les familles nombreuses',
 			'price' => 300,
 			'created_at' => now(),
-            'updated_at' => now(),
+			'updated_at' => now(),
 		]);
-    }
+	}
 }

@@ -2,20 +2,62 @@
     <h1>Reservation</h1>
     <div class="container">
         <div v-show="step === 1">
-            <h3>Recapitulatif de la reservation</h3>
+            <h3>Choix des options</h3>
             <div class="info">
-                <p><strong>Chalet:</strong> {{ chalet }}</p>
-                <p><strong>Date de debut:</strong> {{ startDate }}</p>
-                <p><strong>Date de fin:</strong> {{ endDate }}</p>
-                <p><strong>Prix total:</strong> {{ totalPrice }} €</p>
+                <label>
+                    <input type="radio" value="All-in" v-model="option" />
+                    All-in
+                </label>
+                <label>
+                    <input type="radio" value="Diner" v-model="option" /> Diner
+                </label>
+                <label>
+                    <input
+                        type="radio"
+                        value="Petit-Dejeuner"
+                        v-model="option"
+                    />
+                    Petit-Dejeuner
+                </label>
+                <label>
+                    <input type="radio" value="Spa" v-model="option" /> Spa
+                </label>
             </div>
             <div class="div_button">
-                <div class="button" @click="goBack">Quitter</div>
+                <div class="button" @click="goBack">Retour</div>
                 <div class="button" @click="step++">Suivant</div>
             </div>
         </div>
 
         <div v-show="step === 2">
+            <h3>Nombres de personnes</h3>
+            <div class="info">
+                <label>
+                    Nombre d'adultes:
+                    <input
+                        v-model="reservation.adult"
+                        type="number"
+                        min="1"
+                        required
+                    />
+                </label>
+                <label>
+                    Nombre d'enfants:
+                    <input
+                        v-model="reservation.children"
+                        type="number"
+                        min="0"
+                        required
+                    />
+                </label>
+            </div>
+            <div class="div_button">
+                <div class="button" @click="step--">Retour</div>
+                <div class="button" @click="step++">Suivant</div>
+            </div>
+        </div>
+
+        <div v-show="step === 3">
             <h3>Informations personnelles</h3>
             <div class="info">
                 <label>
@@ -41,27 +83,13 @@
             </div>
         </div>
 
-        <div v-show="step === 3">
-            <h3>Nombres de personnes</h3>
+        <div v-show="step === 4">
+            <h3>Recapitulatif de la reservation</h3>
             <div class="info">
-                <label>
-                    Nombre d'adultes:
-                    <input
-                        v-model="reservation.adult"
-                        type="number"
-                        min="1"
-                        required
-                    />
-                </label>
-                <label>
-                    Nombre d'enfants:
-                    <input
-                        v-model="reservation.children"
-                        type="number"
-                        min="0"
-                        required
-                    />
-                </label>
+                <p><strong>Chalet:</strong> {{ chalet }}</p>
+                <p><strong>Date de debut:</strong> {{ startDate }}</p>
+                <p><strong>Date de fin:</strong> {{ endDate }}</p>
+                <p><strong>Prix total:</strong> {{ totalPrice }} €</p>
             </div>
             <div class="div_button">
                 <div class="button" @click="step--">Retour</div>
@@ -102,7 +130,7 @@ const goBack = () => {
 };
 
 const progressBarWidth = () => {
-    return (step.value / 3) * 100 + "%";
+    return (step.value / 4) * 100 + "%";
 };
 </script>
 

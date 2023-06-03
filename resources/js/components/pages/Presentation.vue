@@ -23,13 +23,13 @@
                 </div>
             </div>
             <div class="image">
-                    <img src="../../../../public/assets/images/cottage/classic_cottage.jpg" alt="">
+                    <img src="assets/images/cottage/classic_cottage.jpg" alt="">
             </div>
         </div>
 
         <div class="cottage_left">
             <div class="image">
-                <img src="../../../../public/assets/images/cottage/familial_cottage.jpeg" alt="">
+                <img src="assets/images/cottage/familial_cottage.jpeg" alt="">
             </div>
 
             <div class="info">
@@ -78,7 +78,7 @@
                 </div>
             </div>
             <div class="image">
-                    <img src="../../../../public/assets/images/cottage/love_cottage.jpeg" alt="">
+                    <img src="assets/images/cottage/love_cottage.jpeg" alt="">
             </div>
         </div>
     </section>

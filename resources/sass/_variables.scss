@@ -1,24 +1,22 @@
 // _variables.scss
 
 // Primary Colors
-$color-primary-dark: #b87333;
-$color-primary-light: #3378b8;
-
-// Secondary Colors (optional)
-$color-secondary-dark: darken($color-primary-dark, 10%);
-$color-secondary-light: lighten($color-primary-light, 10%);
+$color-primary: #3378b8;
+$color-secondary: #b87333;
+$color-primary-hover: darken($color-primary, 10%);
+$color-secondary-hover: darken($color-secondary, 10%);
 
 // Text Colors
-$color-text-dark: darken($color-primary-dark, 50%);
-$color-text-light: lighten($color-primary-light, 50%);
+$color-text-dark: #333;
+$color-text-light: #fff;
 
 // Border Colors
-$color-border-dark: darken($color-primary-dark, 20%);
-$color-border-light: lighten($color-primary-light, 20%);
+$color-border-dark: darken($color-primary, 10%);
+$color-border-light: lighten($color-primary, 10%);
 
 // Background Colors
-$color-background-dark: darken($color-primary-dark, 5%);
-$color-background-light: lighten($color-primary-light, 5%);
+$color-background-dark: darken($color-primary, 10%);
+$color-background-light: lighten($color-primary, 10%);
 
 // Sizes
 $font-size-default: 1em;

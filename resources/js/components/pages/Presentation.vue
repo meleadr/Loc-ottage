@@ -166,6 +166,11 @@ onMounted(fetchCottages);
     }
 }
 
+#cottage {
+    background-color: whitesmoke;
+    padding: 2rem;
+}
+
 .contact {
     text-align: center;
     padding: 2rem;

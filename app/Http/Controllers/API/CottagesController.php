@@ -18,4 +18,18 @@ class CottagesController extends Controller
 		$cottage = Cottage::find($id);
 		return response()->json($cottage);
 	}
+
+	public function addCottage()
+	{
+		$cottage = new Cottage();
+		$cottage->name = request('name');
+		$cottage->area = request('area');
+		$cottage->bedrooms = request('bedrooms');
+		$cottage->bathrooms = request('persons');
+		$cottage->description = request('description');
+		$cottage->price = request('price');
+		$cottage->image = request('image_url');
+		$cottage->save();
+		return response()->json($cottage);
+	}
 }

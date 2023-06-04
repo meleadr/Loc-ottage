@@ -53,6 +53,7 @@
                         <th>Date de réservation</th>
                         <th>Date de debut</th>
                         <th>Date de fin</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -65,41 +66,28 @@
                         <td>{{ reservation.name }}</td>
                         <td>{{ reservation.surname }}</td>
                         <td>{{ reservation.email }}</td>
-                        <td>{{ reservation.chalet }}</td>
-                        <td>{{ reservation.reservationDate }}</td>
-                        <td>{{ reservation.startDate }}</td>
-                        <td>{{ reservation.endDate }}</td>
+                        <td>{{ reservation.cottage }}</td>
+                        <td>{{ reservation.created_at }}</td>
+                        <td>{{ reservation.start_date }}</td>
+                        <td>{{ reservation.end_date }}</td>
                         <td>{{ reservation.status }}</td>
                         <td>
                             <button
-                                @click="
-                                    updateReservationStatus(
-                                        reservation,
-                                        'En attente'
-                                    )
-                                "
-                            >
-                                Set Pending
-                            </button>
-                            <button
-                                @click="
-                                    updateReservationStatus(
-                                        reservation,
-                                        'confirmed'
-                                    )
-                                "
+                                v-show="reservation.status_id === 1"
+                                @click="updateReservationStatus(reservation, 2)"
                             >
                                 Confirmé
                             </button>
                             <button
-                                @click="
-                                    updateReservationStatus(reservation, 'paid')
-                                "
+                                v-show="reservation.status_id === 2"
+                                @click="updateReservationStatus(reservation, 4)"
                             >
                                 Marqué comme payé
                             </button>
-                            <button @click="cancelReservation(reservation)">
-                                Cancel
+                            <button
+                                @click="updateReservationStatus(reservation, 3)"
+                            >
+                                Annuler
                             </button>
                         </td>
                     </tr>
@@ -125,6 +113,10 @@ const selectedChalet = ref("");
 const selectedStatus = ref("");
 const sortOrder = ref("");
 
+const searchQuery = computed(() => searchText.value.toLowerCase());
+const filterOption = computed(() => selectedChalet.value.toLowerCase());
+const sortOption = computed(() => sortOrder.value.toLowerCase());
+
 const goBack = () => {
     router.push("/");
 };
@@ -134,8 +126,41 @@ const logout = () => {
     router.push("/admin/login");
 };
 
+const getAllCottages = async () => {
+    const response = await axios.get("/api/cottages/getAllCottages");
+    chalets.value = response.data;
+};
+
+const getAllReservations = async () => {
+    const response = await axios.get("/api/bookings/getAllBookings");
+    reservations.value = response.data;
+    console.log(reservations.value);
+};
+
+const getAllStatuses = async () => {
+    const response = await axios.get("/api/status/getAllStatus");
+    statuses.value = response.data;
+    console.log(statuses.value);
+};
+
 onMounted(async () => {
-    // Fetch data from API and populate reservations, chalets and statuses...
+    await getAllCottages();
+    await getAllReservations();
+    await getAllStatuses();
+
+    reservations.value.forEach((reservation) => {
+        reservation.status = statuses.value.find(
+            (status) => status.id === reservation.status_id
+        ).name;
+    });
+
+    reservations.value.forEach((reservation) => {
+        reservation.cottage = chalets.value.find(
+            (chalet) => chalet.id === reservation.cottage_id
+        ).name;
+    });
+
+    console.log(reservations.value);
 });
 
 const filteredReservations = computed(() => {
@@ -201,7 +226,9 @@ const cancelReservation = async (reservation) => {
 };
 
 const getClassForReservation = (reservation) => {
-    // Implement the logic to get class for reservation row (e.g., 'red' for overdue)
+    if (reservation.status_id === 3) {
+        return "red";
+    }
 };
 </script>
 
@@ -267,6 +294,7 @@ div {
             tbody {
                 tr {
                     transition: background-color 0.5s ease-in-out;
+                    background-color: white;
 
                     &.red {
                         background-color: $color-secondary;

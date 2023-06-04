@@ -4,7 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CottagesController;
-use App\Http\Controllers\API\BookingController;
+use App\Http\Controllers\API\BookingsController;
+use App\Http\Controllers\API\StatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,10 @@ Route::controller(CottagesController::class)->group(function () {
 	Route::get('/cottages/getCottage/{id}', 'getCottage');
 });
 
-Route::controller(BookingController::class)->group(function () {
+Route::controller(BookingsController::class)->group(function () {
 	Route::get('/bookings/getAllBookings', 'getAllBookings');
+});
+
+Route::controller(StatusController::class)->group(function () {
+	Route::get('/status/getAllStatus', 'getAllStatus');
 });

@@ -27,6 +27,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(CottagesController::class)->group(function () {
 	Route::get('/cottages/getAllCottages', 'getAllCottages');
+	Route::get('/cottages/getCottage/{id}', 'getCottage');
 });
 
 Route::controller(BookingController::class)->group(function () {

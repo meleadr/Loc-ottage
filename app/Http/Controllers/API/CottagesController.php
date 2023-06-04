@@ -12,4 +12,10 @@ class CottagesController extends Controller
 		$cottages = Cottage::all();
 		return response()->json($cottages);
 	}
+
+	public function getCottage($id)
+	{
+		$cottage = Cottage::find($id);
+		return response()->json($cottage);
+	}
 }

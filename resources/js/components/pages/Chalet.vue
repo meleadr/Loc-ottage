@@ -3,7 +3,7 @@
         <div class="chalet">
             <div class="title">
                 <a href="/" class="button">Retour</a>
-                <h1 class="chalet__title">{{ chalet.title }}</h1>
+                <h1 class="chalet__title">{{ chalet.name }}</h1>
             </div>
 
             <div class="chalet__image">
@@ -131,6 +131,7 @@ onMounted(() => {
 });
 </script>
 <style scoped lang="scss">
+@use "@sass/_variables" as *;
 .container {
     display: flex;
     justify-content: center;
@@ -159,7 +160,7 @@ onMounted(() => {
     }
 
     &__title {
-        color: #555;
+        color: $color-primary;
         margin-bottom: 1rem;
         font-size: 1.5rem;
     }
@@ -175,12 +176,13 @@ onMounted(() => {
     }
 
     &__info {
+        width: 100%;
         margin-bottom: 2rem;
     }
 
     &__description {
-        color: #777;
-        font-size: 0.9rem;
+        color: $color-primary-dark;
+        font-size: $font-size-large;
         line-height: 1.5;
         margin-top: 2rem;
     }

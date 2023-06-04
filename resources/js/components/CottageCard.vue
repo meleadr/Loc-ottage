@@ -12,7 +12,7 @@
             :class="{ 'info-left': id % 2 === 0, 'info-right': id % 2 === 1 }"
         >
             <h2>{{ name }}</h2>
-            <p>{{ description }}</p>
+            <p class="description">{{ description }}</p>
 
             <CottageInfo
                 :area="area"
@@ -30,7 +30,7 @@
 
 <script setup>
 import CottageInfo from "./CottageInfo.vue";
-import { defineProps, computed } from "vue";
+import { computed } from "vue";
 
 const props = defineProps({
     id: {
@@ -73,20 +73,27 @@ const lien = computed(() => {
 </script>
 
 <style scoped lang="scss">
+@use "@sass/_variables.scss" as *;
 .card {
     display: flex;
-    width: 100%;
+    justify-content: center;
+    width: 80%;
     align-items: center;
-    margin: 2rem 0;
+    margin: 2rem auto;
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+    background-color: $color-primary-hover;
 }
 
 .info {
     width: 50%;
     padding: 0 2rem;
-    color: orange;
+    color: $color-secondary;
+
+    .description {
+        color: white;
+    }
 
     &-left {
         order: 2;

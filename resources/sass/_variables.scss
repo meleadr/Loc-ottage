@@ -10,6 +10,10 @@ $color-secondary-hover: darken($color-secondary, 10%);
 $color-primary-dark: darken($color-primary, 20%);
 $color-secondary-dark: darken($color-secondary, 20%);
 
+// Light
+$color-primary-light: lighten($color-primary, 20%);
+$color-secondary-light: lighten($color-secondary, 20%);
+
 // Text Colors
 $color-text-dark: #333;
 $color-text-light: #fff;

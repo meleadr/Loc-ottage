@@ -154,6 +154,7 @@ onMounted(fetchCottages);
 
 .contact {
     text-align: center;
+    padding: 2rem;
     .contact_container {
         width: 75%;
         margin: 0 auto;
@@ -171,6 +172,16 @@ onMounted(fetchCottages);
                 border-radius: 1rem;
                 border: none;
                 box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+            }
+
+            textarea {
+                resize: none;
+            }
+
+            button {
+                font-size: 1rem;
+                margin-top: 1rem;
+                padding: 0.5rem 1rem;
             }
         }
     }

@@ -53,6 +53,7 @@
             </div>
         </div>
 
+        <!-- Etape 2 : Nombre de personnes -->
         <div v-show="step === 2">
             <h3>Nombres de personnes</h3>
             <div class="info">
@@ -65,6 +66,7 @@
                         required
                     />
                 </label>
+                <br />
                 <label>
                     Nombre d'enfants:
                     <input
@@ -77,6 +79,7 @@
             </div>
         </div>
 
+        <!-- Etape 3 : Informations personnelles -->
         <div v-show="step === 3">
             <h3>Informations personnelles</h3>
             <div class="info">
@@ -84,14 +87,17 @@
                     Prenom:
                     <input v-model="reservation.name" required />
                 </label>
+                <br />
                 <label>
                     Nom:
                     <input v-model="reservation.surname" required />
                 </label>
+                <br />
                 <label>
                     Email:
                     <input v-model="reservation.email" type="email" required />
                 </label>
+                <br />
                 <label>
                     Téléphone:
                     <input v-model="reservation.phone" type="tel" required />
@@ -99,6 +105,7 @@
             </div>
         </div>
 
+        <!-- Etape 4 : Recapitulatif de la reservation -->
         <div v-show="step === 4">
             <h3>Recapitulatif de la reservation</h3>
             <div class="info recap">
@@ -130,16 +137,19 @@
             </div>
         </div>
 
-        <div class="progressBar" :style="{ width: progressBarWidth() }"></div>
-        <div class="div_button">
-            <div class="button" @click="step > 1 ? step-- : goBack()">
-                Retour
-            </div>
-            <div
-                class="button"
-                @click="step < 4 ? step++ : submitReservation()"
-            >
-                {{ step < 4 ? "Suivant" : "Valider" }}
+        <!-- ProgressBar & button -->
+        <div>
+            <div class="progressBar" :style="{ width: progressBarWidth() }"></div>
+            <div class="div_button">
+                <div class="button" @click="step > 1 ? step-- : goBack()">
+                    Retour
+                </div>
+                <div
+                    class="button"
+                    @click="step < 4 ? step++ : submitReservation()"
+                >
+                    {{ step < 4 ? "Suivant" : "Valider" }}
+                </div>
             </div>
         </div>
     </div>

@@ -1,145 +1,39 @@
 <template>
-    <section>
-        <!-- Affichage des cottages -->
-        <ul>
-            <li v-for="cottage in cottages" :key="cottage.id">
-                {{ cottage.name }}
-            </li>
-        </ul>
+    <!-- SECTION PRESENTATION -->
+    <section class="presentation hero full-screen">
+        <img src="/assets/images/logo.png" alt="logo" />
+        <a href="/admin" class="button admin" v-show="token">Admin</a>
+        <div class="">
+            <h1>Loc'ottage</h1>
+            <p>
+                Bienvenue sur Loc'ottage ! Nous sommes ravis de vous accueillir
+                dans notre univers chaleureux et enchanteur. Que vous soyez en
+                quête d'une escapade romantique, d'une réunion familiale ou
+                d'une aventure en plein air, notre sélection de chalets uniques
+                saura combler toutes vos attentes.
+            </p>
+            <a class="button" href="#cottage">Voir nos chalets</a>
+        </div>
+    </section>
 
+    <!-- SECTION CHALET -->
+    <section id="cottage">
         <CottageCard
             v-for="cottage in cottages"
             :key="cottage.id"
             :id="cottage.id"
             :name="cottage.name"
             :area="cottage.area"
-            :nbBedrooms="cottage.nbBedrooms"
-            :nbPersons="cottage.nbPersons"
+            :bedrooms="cottage.bedrooms"
+            :persons="cottage.persons"
             :description="cottage.description"
             :price="cottage.price"
             :image_url="cottage.image_url"
         />
-
-        <!-- <div class="cottage_right">
-            <div class="info">
-                <h2>Chalet Familial</h2>
-
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    delectus natus cum quod? Soluta impedit, aliquam odio
-                    facilis aperiam sapiente quasi doloribus amet obcaecati
-                    totam dolorem laborum rem eveniet inventore? Nam laborum
-                    delectus ullam rem velit? Ab nam illum dolorum iste minus
-                    dolorem optio ipsa sapiente enim et. Provident, nobis totam.
-                    Iste accusamus libero quam a mollitia quia nostrum saepe.
-                    Alias iste rerum, facere sunt eaque laborum quis ex possimus
-                    sit asperiores facilis consequuntur voluptates tempora magni
-                    non assumenda maxime aut quo autem dolorem unde excepturi
-                    laboriosam animi. Nobis, alias. Inventore consequuntur
-                    suscipit tenetur sunt voluptas totam vel quaerat assumenda
-                    at modi, earum deleniti, rerum laudantium necessitatibus,
-                    aspernatur eveniet expedita distinctio explicabo nostrum
-                    nisi? Dicta dignissimos veritatis odio? Quidem, et?
-                </p>
-
-                <CottageInfo
-                    surface="100m²"
-                    nbPersonnes="4"
-                    nbChambres="2"
-                    prix="100€"
-                />
-
-                <div class="button_container">
-                    <a class="button" href="#"> Voir plus </a>
-                </div>
-            </div>
-            <div class="image">
-                <img
-                    src="/assets/images/cottage/familial_cottage.jpeg"
-                    alt=""
-                />
-            </div>
-        </div> -->
-
-        <!-- <div class="cottage_left">
-            <div class="image">
-                <img src="/assets/images/cottage/love_cottage.jpeg" alt="" />
-            </div>
-
-            <div class="info">
-                <h2>Chalet Familial</h2>
-
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    delectus natus cum quod? Soluta impedit, aliquam odio
-                    facilis aperiam sapiente quasi doloribus amet obcaecati
-                    totam dolorem laborum rem eveniet inventore? Nam laborum
-                    delectus ullam rem velit? Ab nam illum dolorum iste minus
-                    dolorem optio ipsa sapiente enim et. Provident, nobis totam.
-                    Iste accusamus libero quam a mollitia quia nostrum saepe.
-                    Alias iste rerum, facere sunt eaque laborum quis ex possimus
-                    sit asperiores facilis consequuntur voluptates tempora magni
-                    non assumenda maxime aut quo autem dolorem unde excepturi
-                    laboriosam animi. Nobis, alias. Inventore consequuntur
-                    suscipit tenetur sunt voluptas totam vel quaerat assumenda
-                    at modi, earum deleniti, rerum laudantium necessitatibus,
-                    aspernatur eveniet expedita distinctio explicabo nostrum
-                    nisi? Dicta dignissimos veritatis odio? Quidem, et?
-                </p>
-
-                <CottageInfo
-                    surface="100m²"
-                    nbPersonnes="4"
-                    nbChambres="2"
-                    prix="100€"
-                />
-
-                <div class="button_container">
-                    <a class="button" href="#"> Voir plus </a>
-                </div>
-            </div>
-        </div> -->
-
-        <!-- <div class="cottage_right">
-            <div class="info">
-                <h2>Chalet Familial</h2>
-
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    delectus natus cum quod? Soluta impedit, aliquam odio
-                    facilis aperiam sapiente quasi doloribus amet obcaecati
-                    totam dolorem laborum rem eveniet inventore? Nam laborum
-                    delectus ullam rem velit? Ab nam illum dolorum iste minus
-                    dolorem optio ipsa sapiente enim et. Provident, nobis totam.
-                    Iste accusamus libero quam a mollitia quia nostrum saepe.
-                    Alias iste rerum, facere sunt eaque laborum quis ex possimus
-                    sit asperiores facilis consequuntur voluptates tempora magni
-                    non assumenda maxime aut quo autem dolorem unde excepturi
-                    laboriosam animi. Nobis, alias. Inventore consequuntur
-                    suscipit tenetur sunt voluptas totam vel quaerat assumenda
-                    at modi, earum deleniti, rerum laudantium necessitatibus,
-                    aspernatur eveniet expedita distinctio explicabo nostrum
-                    nisi? Dicta dignissimos veritatis odio? Quidem, et?
-                </p>
-
-                <CottageInfo
-                    surface="100m²"
-                    nbPersonnes="4"
-                    nbChambres="2"
-                    prix="100€"
-                />
-
-                <div class="button_container">
-                    <a class="button" href="#"> Voir plus </a>
-                </div>
-            </div>
-            <div class="image">
-                <img src="/assets/images/cottage/classic_cottage.jpg" alt="" />
-            </div>
-        </div> -->
     </section>
 
-    <section id="contact" class="container">
+    <!-- SECTION CONTACT -->
+    <section class="contact container">
         <h1>Contactez-nous</h1>
         <div class="contact_container">
             <form>
@@ -167,18 +61,24 @@
                     required
                 ></textarea>
 
-                <input type="submit" value="Envoyer" class="button" />
+                <button type="submit" class="button">Envoyer</button>
             </form>
         </div>
     </section>
 </template>
 
 <script setup>
-import CottageCard from "../CottageCard.vue";
 import axios from "axios";
 import { ref, onMounted } from "vue";
 
+// Import des composants
+import CottageCard from "../CottageCard.vue";
+
+// Déclaration des variables
 const cottages = ref([]);
+
+// Fonction pour récupérer le token de l'utilisateur
+const token = sessionStorage.getItem("token");
 
 // Fonction pour récupérer les cottages de la base de données
 const fetchCottages = async () => {
@@ -194,55 +94,89 @@ onMounted(fetchCottages);
 
 <style scoped lang="scss">
 @use "@sass/_variables" as *;
+.hero {
+    background-image: url(/assets/images/hero.jpeg);
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    z-index: 2;
 
-.cottage_right,
-.cottage_left {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 2rem 0;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
-
-    .info {
-        width: 50%;
-        padding: 0 2rem;
-        color: orange;
-
-        .table_info {
-            margin: 2rem 0;
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-            background-color: grey;
-
-            th,
-            td {
-                padding: 1rem;
-            }
-        }
-
-        .button_container {
-            margin: 2rem 0;
-            text-align: center;
-        }
+    img {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 8vw;
+        height: auto;
     }
-    .image {
-        width: 50%;
-        padding: 0 2rem;
 
-        img {
-            width: 100%;
-            height: auto;
-        }
+    .admin {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        border: 0;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-size: $font-size-default;
     }
 }
 
-#contact {
+.hero::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: -1;
+}
+
+.presentation.full-screen {
+    height: 100vh;
+}
+
+.presentation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+    height: 50vh;
+
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    a {
+        margin-top: 2rem;
+        font-size: 1.5rem;
+        padding: 1rem 2rem;
+        border-radius: 1rem;
+        border: 2px solid white;
+        transition: all 0.3s ease-in-out;
+    }
+}
+
+#cottage {
+    background-color: whitesmoke;
+    padding: 2rem;
+}
+
+.contact {
+    text-align: center;
+    padding: 2rem;
     .contact_container {
         width: 75%;
+        margin: 0 auto;
 
         form {
             display: flex;
@@ -257,6 +191,16 @@ onMounted(fetchCottages);
                 border-radius: 1rem;
                 border: none;
                 box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+            }
+
+            textarea {
+                resize: none;
+            }
+
+            button {
+                font-size: 1rem;
+                margin-top: 1rem;
+                padding: 0.5rem 1rem;
             }
         }
     }

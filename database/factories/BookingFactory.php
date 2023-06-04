@@ -3,6 +3,9 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Cottage;
+use App\Models\Booking;
+use Carbon\Carbon;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Booking>
@@ -16,18 +19,32 @@ class BookingFactory extends Factory
      */
     public function definition(): array
     {
-		return [
-            'start_date' => $this->faker->dateTimeBetween('now', '+1 years'),
-			'end_date' => $this->faker->dateTimeBetween('+1 years', '+1 years +6 months'),
-			'name' => $this->faker->name,
-			'surname' => $this->faker->lastName,
-			'mail' => $this->faker->unique()->safeEmail(),
-			'phone' => $this->faker->phoneNumber,
-			'persons' => $this->faker->numberBetween(1, 10),
-			'status' => 'pending',
-			'cottage_id' => $this->faker->numberBetween(1, 10),
-			'option_id' => $this->faker->numberBetween(1, 10),
-			'status_id' => $this->faker->numberBetween(1, 10),
+        $cottage = Cottage::inRandomOrder()->first();
+        $start_date = Carbon::now()->addDays(rand(1, 500));
+        $end_date = (clone $start_date)->addDays(rand(1, 10));
+
+        // Check for overlapping bookings
+        while (Booking::where('cottage_id', $cottage->id)
+            ->where(function ($query) use ($start_date, $end_date) {
+                $query->whereBetween('start_date', [$start_date, $end_date])
+                    ->orWhereBetween('end_date', [$start_date, $end_date]);
+            })->exists()) {
+            // If overlap, try new dates
+            $start_date = Carbon::now()->addDays(rand(1, 500));
+            $end_date = (clone $start_date)->addDays(rand(1, 10));
+        }
+
+        return [
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'price' => $this->faker->numberBetween(100, 1000),
+            'name' => $this->faker->name,
+            'surname' => $this->faker->lastName,
+            'email' => $this->faker->unique()->safeEmail(),
+            'phone' => $this->faker->phoneNumber,
+            'persons' => $this->faker->numberBetween(1, 10),
+            'cottage_id' => $cottage->id,
+            'status_id' => $this->faker->numberBetween(1, 4),
         ];
     }
 }

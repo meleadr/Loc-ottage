@@ -1,38 +1,46 @@
 <template>
     <h1>Reservation</h1>
     <div class="container">
+        <!-- Etape 1 : Choix des options -->
         <div v-show="step === 1">
             <h3>Choix des options</h3>
             <div class="info options">
-                <div
-                    v-if="
-                        !optionSelected.diner && !optionSelected.petitDejeuner
-                    "
-                >
-                    <input type="checkbox" id="allin" v-model="allInSelected" />
+                <div class="option">
+                    <input
+                        type="checkbox"
+                        id="allin"
+                        v-model="allInChecked"
+                        @change="toggleAllOptions"
+                    />
                     <label for="allin">All-in</label>
                 </div>
-                <div v-if="!allInSelected">
+
+                <div class="option">
                     <input
                         type="checkbox"
                         id="dinner"
-                        v-model="optionSelected.diner"
+                        v-model="dinnerChecked"
+                        @change="addDinnerOption"
                     />
                     <label for="dinner">Diner</label>
                 </div>
-                <div v-if="!allInSelected">
+
+                <div class="option">
                     <input
                         type="checkbox"
                         id="breakfast"
-                        v-model="optionSelected.petitDejeuner"
+                        v-model="breakfastChecked"
+                        @change="addBreakfastOption"
                     />
                     <label for="breakfast">Petit-déjeuner</label>
                 </div>
-                <div>
+
+                <div class="option">
                     <input
                         type="checkbox"
                         id="spa"
-                        v-model="optionSelected.spa"
+                        v-model="spaChecked"
+                        @change="addSpaOption"
                     />
                     <label for="spa">Spa</label>
                 </div>
@@ -82,25 +90,22 @@
                     Téléphone:
                     <input v-model="reservation.phone" type="tel" required />
                 </label>
+                <p v-if="error" class="error">{{ error }}</p>
             </div>
         </div>
 
         <div v-show="step === 4">
             <h3>Recapitulatif de la reservation</h3>
             <div class="info recap">
-                <p><strong>Chalet:</strong> {{ chalet }}</p>
+                <p><strong>Chalet:</strong> {{ id_cottage }}</p>
                 <p><strong>Date de debut:</strong> {{ startDate }}</p>
                 <p><strong>Date de fin:</strong> {{ endDate }}</p>
                 <p><strong>Prix total:</strong> {{ totalPrice }} €</p>
                 <p><strong>Options:</strong></p>
                 <ul>
-                    <li v-if="allInSelected">All-in</li>
-                    <li v-else-if="optionSelected.diner">Diner</li>
-                    <li v-else-if="optionSelected.petitDejeuner">
-                        Petit-déjeuner
+                    <li v-for="option in optionSelected">
+                        {{ option[Object.keys(option)[0]] }}
                     </li>
-                    <li v-else-if="optionSelected.spa">Spa</li>
-                    <li v-else>Aucune</li>
                 </ul>
                 <p>
                     <strong>Nombre d'adultes:</strong> {{ reservation.adult }}
@@ -116,6 +121,16 @@
             </div>
         </div>
 
+        <div v-show="step === 5">
+            <h3>Reservation effectuée</h3>
+            <div class="info">
+                <p>
+                    Votre reservation a bien été effectuée, vous allez être
+                    redirigé vers la page d'accueil.
+                </p>
+            </div>
+        </div>
+
         <div class="progressBar" :style="{ width: progressBarWidth() }"></div>
         <div class="div_button">
             <div class="button" @click="step > 1 ? step-- : goBack()">
@@ -123,7 +138,10 @@
             </div>
             <div
                 class="button"
-                @click="step < 4 ? step++ : submitReservation()"
+                @click="
+                    step < 4 ? checkAndIncrementStep() : submitReservation()
+                "
+                v-show="step <= 4"
             >
                 {{ step < 4 ? "Suivant" : "Valider" }}
             </div>
@@ -132,6 +150,7 @@
 </template>
 
 <script setup>
+import axios from "axios";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
@@ -139,12 +158,61 @@ const route = useRoute();
 const router = useRouter();
 const step = ref(1);
 
-const optionSelected = ref({
-    diner: false,
-    petitDejeuner: false,
-    spa: false,
-});
-const allInSelected = ref(false);
+const allInChecked = ref(false);
+const dinnerChecked = ref(false);
+const breakfastChecked = ref(false);
+const spaChecked = ref(false);
+
+const error = ref("");
+
+const optionSelected = ref([]);
+
+const updateSelectedOptions = () => {
+    optionSelected.value = [];
+    if (
+        allInChecked.value ||
+        (dinnerChecked.value && breakfastChecked.value && spaChecked.value)
+    )
+        optionSelected.value.push({ 1: "All-in" });
+    else {
+        if (dinnerChecked.value) optionSelected.value.push({ 2: "Diner" });
+        if (breakfastChecked.value)
+            optionSelected.value.push({ 3: "Petit-déjeuner" });
+        if (spaChecked.value) optionSelected.value.push({ 4: "Spa" });
+    }
+};
+
+const toggleAllOptions = () => {
+    const newValue = allInChecked.value;
+    dinnerChecked.value = newValue;
+    breakfastChecked.value = newValue;
+    spaChecked.value = newValue;
+
+    updateSelectedOptions();
+};
+
+const addDinnerOption = () => {
+    updateAllInChecked();
+    updateSelectedOptions();
+};
+
+const addBreakfastOption = () => {
+    updateAllInChecked();
+    updateSelectedOptions();
+};
+
+const addSpaOption = () => {
+    updateAllInChecked();
+    updateSelectedOptions();
+};
+
+const updateAllInChecked = () => {
+    if (dinnerChecked.value && breakfastChecked.value && spaChecked.value) {
+        allInChecked.value = true;
+    } else {
+        allInChecked.value = false;
+    }
+};
 
 const reservation = ref({
     name: "",
@@ -155,13 +223,52 @@ const reservation = ref({
     children: 0,
 });
 
-const chalet = route.query.chalet;
+const checkAndIncrementStep = () => {
+    if (step.value === 3) {
+        if (
+            reservation.value.name !== "" &&
+            reservation.value.surname !== "" &&
+            reservation.value.email !== "" &&
+            reservation.value.phone !== ""
+        ) {
+            step.value++;
+        } else {
+            error.value = "Veuillez remplir tous les champs";
+        }
+    } else {
+        step.value++;
+    }
+};
+
+const id_cottage = route.query.id;
 const totalPrice = route.query.totalPrice;
 const startDate = new Date(route.query.startDate).toLocaleDateString("fr-FR");
 const endDate = new Date(route.query.endDate).toLocaleDateString("fr-FR");
 
 const submitReservation = () => {
-    console.log(reservation.value);
+    step.value = 5;
+    const options = optionSelected.value.map((option) => {
+        return { id: Object.keys(option)[0] };
+    });
+    const reservationData = {
+        startDate: startDate,
+        endDate: endDate,
+        totalPrice: totalPrice,
+        name: reservation.value.name,
+        surname: reservation.value.surname,
+        email: reservation.value.email,
+        phone: reservation.value.phone,
+        persons: reservation.value.adult + reservation.value.children,
+        options: options,
+        cottage_id: id_cottage,
+        status_id: 1,
+    };
+
+    axios.post("/api/bookings/createBooking", reservationData).then(() => {
+        setTimeout(() => {
+            router.push({ name: "Presentation" });
+        }, 3000);
+    });
 };
 
 const goBack = () => {
@@ -169,7 +276,7 @@ const goBack = () => {
 };
 
 const progressBarWidth = () => {
-    return (step.value / 4) * 100 + "%";
+    return (step.value / 5) * 100 + "%";
 };
 </script>
 
@@ -179,12 +286,13 @@ const progressBarWidth = () => {
 h1 {
     color: $color-secondary;
     text-align: center;
-    margin-top: $spacing-large;
-    margin-bottom: $spacing-large;
 }
 .container {
     width: 50vw;
     margin: 0 auto;
+    background-color: whitesmoke;
+    padding: 1rem;
+    border-radius: $border-radius-default;
 
     h3 {
         font-size: $font-size-large;
@@ -197,7 +305,6 @@ h1 {
         display: block;
         font-size: $font-size-default;
         color: $color-text-dark;
-        margin-bottom: $spacing-default;
 
         & input {
             display: block;
@@ -221,6 +328,10 @@ h1 {
                 color: $color-secondary;
             }
         }
+
+        .error {
+            color: red;
+        }
     }
 
     .recap {
@@ -235,10 +346,12 @@ h1 {
     .options {
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
+        margin-top: $spacing-large;
 
-        & label {
-            display: inline-flex;
+        .option {
+            display: flex;
+            gap: $spacing-default;
+            margin-bottom: $spacing-default;
         }
     }
 

@@ -1,25 +1,33 @@
 <template>
-    <div class="chalet">
-        <div class="chalet__left">
-            <h1>{{ chalet.title }}</h1>
-            <img src="/assets/images/cottage/chalet.jpg" :alt="chalet.title" />
+    <div class="container">
+        <div class="chalet">
+            <div class="title">
+                <a href="/#cottage" class="button">Retour</a>
+                <h1 class="chalet__title">{{ chalet.name }}</h1>
+            </div>
+
+            <div class="chalet__image">
+                <img :src="chalet.image_url" :alt="chalet.title" />
+            </div>
+
             <div class="chalet__info">
-                <p><strong>Taille:</strong> {{ chalet.size }} m2</p>
-                <p>
-                    <strong>Personnes:</strong>
-                    {{ chalet.persons }} personnes
-                </p>
-                <p><strong>Chambre:</strong> {{ chalet.bedrooms }}</p>
-                <p><strong>Prix par nuit:</strong> {{ chalet.price }} €</p>
+                <CottageInfo
+                    :area="chalet.area"
+                    :persons="chalet.persons"
+                    :bedrooms="chalet.bedrooms"
+                    :price="chalet.price"
+                />
+
+                <div class="chalet__description">
+                    <p>{{ chalet.description }}</p>
+                </div>
             </div>
-            <a href="/" class="button">Retour</a>
         </div>
-        <div class="chalet__right">
-            <div class="chalet__info__description">
-                <p>{{ chalet.description }}</p>
-            </div>
-            <div class="chalet__calendar">
-                <p><strong>Selectionner vos dates:</strong></p>
+
+        <div class="reservation">
+            <div class="reservation__calendar">
+                <p><strong>Sélectionnez vos dates :</strong></p>
+
                 <VueDatePicker
                     v-model="date"
                     range
@@ -29,62 +37,74 @@
                     :disabled-dates="disabledDates"
                     :enable-time-picker="false"
                     @update:model-value="handleDate"
+                    :highlight="disabledDates"
+                    highlight-disabled-days
+                    :day-class="getDayClass"
+                    :min-date="new Date()"
                 >
                     <template #action-extra="{ selectCurrentDate }">
                         <span
                             @click="selectCurrentDate()"
-                            title="Select current date"
+                            title="Sélectionner la date actuelle"
                         >
                             <img
-                                class="slot-icon"
+                                class="calendar-icon"
                                 src="/assets/images/logo.png"
                             />
                         </span>
                     </template>
                 </VueDatePicker>
             </div>
-            <div class="chalet__book">
-                <p class="error" v-show="error">
-                    {{ error }}
-                </p>
-                <p class="chalet__book__price" v-show="totalPrice != 0">
-                    <strong>Prix total:</strong> {{ totalPrice }} €
+
+            <div class="reservation__book">
+                <p class="error" v-show="error">{{ error }}</p>
+                <p class="reservation__price" v-show="totalPrice != 0">
+                    <strong>Prix total :</strong> {{ totalPrice }} €
                 </p>
                 <div class="button" @click="goReservation()">Réserver</div>
             </div>
         </div>
     </div>
 </template>
-
 <script setup>
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, onMounted } from "vue";
+import axios from "axios";
 import { useRouter } from "vue-router";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
+// Import des composants
+import CottageInfo from "../CottageInfo.vue";
+
 const router = useRouter();
+const id = router.currentRoute.value.params.id;
+const chalet = ref({});
+const disabledDates = ref([]);
 
-const disabledDates = computed(() => {
+const getCottage = async () => {
+    const response = await axios.get(`/api/cottages/getCottage/${id}`);
+    chalet.value = response.data;
+};
+const getAllDisabledDates = async () => {
+    const response = await axios.get(
+        `/api/bookings/getAllBookingsFromCottage/${id}`
+    );
+    response.data.forEach((booking) => {
+        const start = new Date(booking.start_date);
+        const end = new Date(booking.end_date);
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // calculate the difference in days
+        for (let i = 0; i <= diffDays; i++) {
+            const date = new Date(start);
+            date.setDate(date.getDate() + i);
+            disabledDates.value.push(date);
+        }
+    });
     const today = new Date();
-
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-
-    const afterTomorrow = new Date(tomorrow);
-    afterTomorrow.setDate(tomorrow.getDate() + 1);
-
-    return [tomorrow, afterTomorrow];
-});
-
-const chalet = ref({
-    title: "Cozy Cottage",
-    size: 100,
-    persons: 4,
-    bedrooms: 2,
-    price: 150,
-    description:
-        "A lovely cottage situated in a serene and peaceful environment...",
-});
+    disabledDates.value.push(today, tomorrow);
+};
 
 const error = ref(null);
 
@@ -102,7 +122,7 @@ const totalPrice = computed(() => {
         error.value = null;
         return diffDays * chalet.value.price;
     } else {
-        error.value = "Veuillez selectionner une date";
+        error.value = "Veuillez sélectionner une date.";
     }
     return 0;
 });
@@ -112,6 +132,7 @@ const goReservation = () => {
         router.push({
             name: "Reservation",
             query: {
+                id: id,
                 chalet: chalet.value.title,
                 startDate: date.start,
                 endDate: date.end,
@@ -120,86 +141,112 @@ const goReservation = () => {
         });
     }
 };
-</script>
 
+onMounted(() => {
+    getCottage();
+    getAllDisabledDates();
+});
+</script>
 <style scoped lang="scss">
 @use "@sass/_variables" as *;
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    max-width: none;
+}
 
 .chalet {
     display: flex;
-    color: $color-text-dark;
-    background-color: $color-background-light;
-    padding: $spacing-default;
-    font-family: $font-family-default;
+    flex-direction: column;
+    align-items: center;
+    width: 50vw;
+    height: 100%;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
-    &__left {
-        width: 50vw;
-        h1 {
-            color: $color-secondary;
-            margin-bottom: $spacing-default;
+    .title {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 2rem;
+        gap: 1rem;
+    }
 
-            &:hover {
-                color: $color-secondary-hover;
-            }
-        }
+    &__title {
+        color: $color-primary;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+
+    &__image {
+        width: 100%;
+        margin-bottom: 1rem;
 
         img {
             width: 100%;
-            border-radius: $border-radius-default;
-            margin-bottom: $spacing-default;
-        }
-    }
-
-    &__right {
-        width: 50vw;
-        font-size: $font-size-default;
-        color: $color-text-dark;
-        line-height: 1.5;
-
-        p {
-            color: $color-primary-dark;
-            margin-bottom: $spacing-small;
-        }
-
-        strong {
-            color: $color-secondary;
-
-            &:hover {
-                color: $color-secondary-hover;
-            }
+            height: auto;
+            border-radius: 0.5rem;
+            object-fit: cover;
         }
     }
 
     &__info {
-        display: inline-flex;
-        margin-bottom: $spacing-large;
+        width: 100%;
+        margin-bottom: 2rem;
     }
 
     &__description {
-        font-size: $font-size-default;
-        color: $color-text-light;
-        margin-top: $spacing-large;
+        color: $color-primary-dark;
+        font-size: $font-size-large;
+        line-height: 1.5;
+        margin-top: 2rem;
     }
+}
+
+.reservation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    height: 100vh;
 
     &__calendar {
-        margin-top: $spacing-large;
+        margin-top: 2rem;
+        text-align: center;
     }
 
     &__book {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        margin-top: $spacing-large;
+        margin-top: 2rem;
 
         &__price {
-            font-size: $font-size-large;
-            color: $color-primary;
-            margin-bottom: $spacing-default;
+            font-size: 1.2rem;
+            color: #428bca;
+            margin-bottom: 1rem;
         }
     }
 }
 
 .slot-icon {
+    height: 40px;
+    width: auto;
+    cursor: pointer;
+}
+
+.error {
+    color: #ff0000;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.calendar-icon {
     height: 40px;
     width: auto;
     cursor: pointer;

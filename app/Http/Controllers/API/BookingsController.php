@@ -14,6 +14,12 @@ class BookingsController extends Controller
 		return response()->json($bookings);
 	}
 
+	public function getAllBookingsFromCottage($id)
+	{
+		$bookings = Booking::where('cottage_id', $id)->get();
+		return response()->json($bookings);
+	}
+
 	public function getBooking($id)
 	{
 		$booking = Booking::find($id);

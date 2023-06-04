@@ -61,6 +61,7 @@
                         <th>Nom</th>
                         <th>Prenom</th>
                         <th>Email</th>
+                        <th>Telephone</th>
                         <th>Chalet</th>
                         <th>Nb personnes</th>
                         <th>Date d'encodage</th>
@@ -79,6 +80,7 @@
                         <td>{{ reservation.name }}</td>
                         <td>{{ reservation.surname }}</td>
                         <td>{{ reservation.email }}</td>
+                        <td>{{ reservation.phone }}</td>
                         <td>{{ reservation.cottage }}</td>
                         <td>{{ reservation.persons }}</td>
                         <td>{{ reservation.created_at_string }}</td>

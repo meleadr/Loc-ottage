@@ -86,7 +86,9 @@ const getCottage = async () => {
     chalet.value = response.data;
 };
 const getAllDisabledDates = async () => {
-    const response = await axios.get(`/api/bookings/getAllBookings`);
+    const response = await axios.get(
+        `/api/bookings/getAllBookingsFromCottage/${id}`
+    );
     response.data.forEach((booking) => {
         const start = new Date(booking.start_date);
         const end = new Date(booking.end_date);
@@ -151,7 +153,7 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     max-width: none;
 }
 
@@ -211,6 +213,7 @@ onMounted(() => {
     flex-direction: column;
     align-items: center;
     width: 50%;
+    height: 100vh;
 
     &__calendar {
         margin-top: 2rem;

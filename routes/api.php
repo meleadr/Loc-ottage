@@ -34,6 +34,7 @@ Route::controller(CottagesController::class)->group(function () {
 
 Route::controller(BookingsController::class)->group(function () {
 	Route::get('/bookings/getAllBookings', 'getAllBookings');
+	Route::get('/bookings/getAllBookingsFromCottage/{id}', 'getAllBookingsFromCottage');
 	Route::post('/bookings/updateStatus/{id}', 'updateStatus');
 	Route::post('/bookings/createBooking', 'createBooking');
 });

@@ -245,12 +245,13 @@ const progressBarWidth = () => {
 h1 {
     color: $color-secondary;
     text-align: center;
-    margin-top: $spacing-large;
-    margin-bottom: $spacing-large;
 }
 .container {
     width: 50vw;
     margin: 0 auto;
+    background-color: whitesmoke;
+    padding: 1rem;
+    border-radius: $border-radius-default;
 
     h3 {
         font-size: $font-size-large;

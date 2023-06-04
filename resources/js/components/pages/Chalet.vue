@@ -37,6 +37,9 @@
                     :disabled-dates="disabledDates"
                     :enable-time-picker="false"
                     @update:model-value="handleDate"
+                    :highlight="disabledDates"
+                    highlight-disabled-days
+                    :day-class="getDayClass"
                 >
                     <template #action-extra="{ selectCurrentDate }">
                         <span
@@ -75,21 +78,30 @@ import CottageInfo from "../CottageInfo.vue";
 const router = useRouter();
 const id = router.currentRoute.value.params.id;
 const chalet = ref({});
+const disabledDates = ref([]);
 
 const getCottage = async () => {
     const response = await axios.get(`/api/cottages/getCottage/${id}`);
     chalet.value = response.data;
 };
-
-const disabledDates = computed(() => {
+const getAllDisabledDates = async () => {
+    const response = await axios.get(`/api/bookings/getAllBookings`);
+    response.data.forEach((booking) => {
+        const start = new Date(booking.start_date);
+        const end = new Date(booking.end_date);
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // calculate the difference in days
+        for (let i = 0; i <= diffDays; i++) {
+            const date = new Date(start);
+            date.setDate(date.getDate() + i);
+            disabledDates.value.push(date);
+        }
+    });
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    const afterTomorrow = new Date(tomorrow);
-    afterTomorrow.setDate(tomorrow.getDate() + 1);
-
-    return [tomorrow, afterTomorrow];
-});
+    disabledDates.value.push(today, tomorrow);
+};
 
 const error = ref(null);
 
@@ -129,6 +141,7 @@ const goReservation = () => {
 
 onMounted(() => {
     getCottage();
+    getAllDisabledDates();
 });
 </script>
 <style scoped lang="scss">

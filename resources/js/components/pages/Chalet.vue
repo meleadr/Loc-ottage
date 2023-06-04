@@ -40,6 +40,7 @@
                     :highlight="disabledDates"
                     highlight-disabled-days
                     :day-class="getDayClass"
+                    :min-date="new Date()"
                 >
                     <template #action-extra="{ selectCurrentDate }">
                         <span

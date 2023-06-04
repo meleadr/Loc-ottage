@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('area');
             $table->integer('bedrooms');
             $table->integer('persons');
-            $table->string('description');
+            $table->text('description');
             $table->integer('price');
             $table->string('image_url');
             $table->timestamps();

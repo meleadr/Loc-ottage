@@ -2,7 +2,7 @@
     <div class="container">
         <div class="chalet">
             <div class="title">
-                <a href="/" class="button">Retour</a>
+                <a href="/#cottage" class="button">Retour</a>
                 <h1 class="chalet__title">{{ chalet.name }}</h1>
             </div>
 
@@ -137,6 +137,7 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    max-width: none;
 }
 
 .chalet {
@@ -171,7 +172,9 @@ onMounted(() => {
 
         img {
             width: 100%;
+            height: auto;
             border-radius: 0.5rem;
+            object-fit: cover;
         }
     }
 

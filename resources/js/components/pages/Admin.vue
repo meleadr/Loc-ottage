@@ -50,7 +50,8 @@
                         <th>Prenom</th>
                         <th>Email</th>
                         <th>Chalet</th>
-                        <th>Date de réservation</th>
+                        <th>Nb personnes</th>
+                        <th>Date d'encodage</th>
                         <th>Date de debut</th>
                         <th>Date de fin</th>
                         <th>Status</th>
@@ -67,9 +68,10 @@
                         <td>{{ reservation.surname }}</td>
                         <td>{{ reservation.email }}</td>
                         <td>{{ reservation.cottage }}</td>
-                        <td>{{ reservation.created_at }}</td>
-                        <td>{{ reservation.start_date }}</td>
-                        <td>{{ reservation.end_date }}</td>
+                        <td>{{ reservation.persons }}</td>
+                        <td>{{ reservation.created_at_string }}</td>
+                        <td>{{ reservation.start_date_string }}</td>
+                        <td>{{ reservation.end_date_string }}</td>
                         <td>{{ reservation.status }}</td>
                         <td>
                             <button
@@ -101,11 +103,11 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
-const route = useRoute();
 const router = useRouter();
 
+// Declarations des variables
 const reservations = ref([]);
 const chalets = ref([]);
 const statuses = ref([]);
@@ -113,20 +115,21 @@ const searchText = ref("");
 const selectedChalet = ref("");
 const selectedStatus = ref("");
 const sortOrder = ref("");
-
 const searchQuery = computed(() => searchText.value.toLowerCase());
-const filterOption = computed(() => selectedChalet.value.toLowerCase());
-const sortOption = computed(() => sortOrder.value.toLowerCase());
+const sortOption = computed(() => sortOrder.value);
 
+// Retourne sur la page d'accueil
 const goBack = () => {
     router.push("/");
 };
 
+// Déconnecte l'utilisateur
 const logout = () => {
     sessionStorage.removeItem("token");
     router.push("/admin/login");
 };
 
+// Récupère les données de la base de données
 const getAllCottages = async () => {
     const response = await axios.get("/api/cottages/getAllCottages");
     chalets.value = response.data;
@@ -142,6 +145,7 @@ const getAllStatuses = async () => {
     statuses.value = response.data;
 };
 
+// Effectue les recherches, filtres et tris
 onMounted(async () => {
     await getAllCottages();
     await getAllReservations();
@@ -160,18 +164,19 @@ onMounted(async () => {
     });
 
     reservations.value.forEach((reservation) => {
-        reservation.created_at = new Date(
+        reservation.created_at_string = new Date(
             reservation.created_at
         ).toLocaleDateString();
-        reservation.start_date = new Date(
+        reservation.start_date_string = new Date(
             reservation.start_date
         ).toLocaleDateString();
-        reservation.end_date = new Date(
+        reservation.end_date_string = new Date(
             reservation.end_date
         ).toLocaleDateString();
     });
 });
 
+// Filtre les réservations en fonction des critères de recherche
 const filteredReservations = computed(() => {
     let result = reservations.value;
 
@@ -190,6 +195,7 @@ const filteredReservations = computed(() => {
     return result;
 });
 
+// Fonctions de recherche, filtre et tri
 const performSearch = () => {
     return reservations.value.filter(
         (reservation) =>
@@ -218,8 +224,7 @@ const performFilter = () => {
 };
 
 const performSort = () => {
-    let result = [...reservations.value];
-
+    let result = reservations.value;
     switch (sortOption.value) {
         case "name":
             result.sort((a, b) => a.name.localeCompare(b.name));
@@ -241,6 +246,7 @@ const performSort = () => {
     return result;
 };
 
+// Met à jour le status d'une réservation
 const updateReservationStatus = async (reservation, status) => {
     const response = await axios.post(
         "/api/bookings/updateStatus/" + reservation.id,
@@ -259,6 +265,7 @@ const updateReservationStatus = async (reservation, status) => {
     }
 };
 
+// Retourne la classe css correspondant au status d'une réservation
 const getClassForReservation = (reservation) => {
     if (reservation.status_id === 3) {
         return "red";

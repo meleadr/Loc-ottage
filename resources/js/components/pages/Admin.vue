@@ -11,10 +11,9 @@
                 <input
                     type="text"
                     v-model="searchText"
-                    placeholder="Rechercher..."
-                    @input="performSearch"
+                    placeholder="Nom, prenom, mail..."
                 />
-                <select v-model="selectedChalet" @change="performFilter">
+                <select v-model="selectedChalet">
                     <option value="">Tous les chalets</option>
                     <option
                         v-for="chalet in chalets"
@@ -24,7 +23,7 @@
                         {{ chalet.name }}
                     </option>
                 </select>
-                <select v-model="selectedStatus" @change="performFilter">
+                <select v-model="selectedStatus">
                     <option value="">Tous les status</option>
                     <option
                         v-for="status in statuses"
@@ -34,12 +33,25 @@
                         {{ status.name }}
                     </option>
                 </select>
-                <select v-model="sortOrder" @change="performSort">
+                <select v-model="sortOrder">
                     <option value="">Trier par...</option>
                     <option value="reservationDate">Date de réservation</option>
                     <option value="encodingDate">Date d'encodage</option>
                     <option value="name">Nom</option>
                 </select>
+                <div class="showOutdatedDiv">
+                    <input
+                        type="checkbox"
+                        id="showOutdated"
+                        v-model="showOutdated"
+                    />
+                    <label v-if="showOutdated" for="showOutdated"
+                        ><i class="bx bx-show"></i> Voir +
+                    </label>
+                    <label v-else for="showOutdated">
+                        <i class="bx bx-show"></i> Voir -
+                    </label>
+                </div>
             </div>
 
             <!-- Reservation Table -->
@@ -50,7 +62,8 @@
                         <th>Prenom</th>
                         <th>Email</th>
                         <th>Chalet</th>
-                        <th>Date de réservation</th>
+                        <th>Nb personnes</th>
+                        <th>Date d'encodage</th>
                         <th>Date de debut</th>
                         <th>Date de fin</th>
                         <th>Status</th>
@@ -67,9 +80,10 @@
                         <td>{{ reservation.surname }}</td>
                         <td>{{ reservation.email }}</td>
                         <td>{{ reservation.cottage }}</td>
-                        <td>{{ reservation.created_at }}</td>
-                        <td>{{ reservation.start_date }}</td>
-                        <td>{{ reservation.end_date }}</td>
+                        <td>{{ reservation.persons }}</td>
+                        <td>{{ reservation.created_at_string }}</td>
+                        <td>{{ reservation.start_date_string }}</td>
+                        <td>{{ reservation.end_date_string }}</td>
                         <td>{{ reservation.status }}</td>
                         <td>
                             <button
@@ -85,6 +99,7 @@
                                 Marqué comme payé
                             </button>
                             <button
+                                v-show="reservation.status_id !== 3"
                                 @click="updateReservationStatus(reservation, 3)"
                             >
                                 Annuler
@@ -100,32 +115,35 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
-const route = useRoute();
 const router = useRouter();
 
+// Declarations des variables
 const reservations = ref([]);
+const reservationsOutdated = ref([]);
 const chalets = ref([]);
 const statuses = ref([]);
 const searchText = ref("");
 const selectedChalet = ref("");
 const selectedStatus = ref("");
 const sortOrder = ref("");
-
 const searchQuery = computed(() => searchText.value.toLowerCase());
-const filterOption = computed(() => selectedChalet.value.toLowerCase());
-const sortOption = computed(() => sortOrder.value.toLowerCase());
+const sortOption = computed(() => sortOrder.value);
+const showOutdated = ref(false);
 
+// Retourne sur la page d'accueil
 const goBack = () => {
     router.push("/");
 };
 
+// Déconnecte l'utilisateur
 const logout = () => {
     sessionStorage.removeItem("token");
     router.push("/admin/login");
 };
 
+// Récupère les données de la base de données
 const getAllCottages = async () => {
     const response = await axios.get("/api/cottages/getAllCottages");
     chalets.value = response.data;
@@ -141,6 +159,7 @@ const getAllStatuses = async () => {
     statuses.value = response.data;
 };
 
+// Effectue les recherches, filtres et tris
 onMounted(async () => {
     await getAllCottages();
     await getAllReservations();
@@ -159,80 +178,99 @@ onMounted(async () => {
     });
 
     reservations.value.forEach((reservation) => {
-        reservation.created_at = new Date(
+        reservation.created_at_string = new Date(
             reservation.created_at
         ).toLocaleDateString();
-        reservation.start_date = new Date(
+        reservation.start_date_string = new Date(
             reservation.start_date
         ).toLocaleDateString();
-        reservation.end_date = new Date(
+        reservation.end_date_string = new Date(
             reservation.end_date
         ).toLocaleDateString();
     });
+
+    reservationsOutdated.value = reservations.value;
+
+    // remove reservations that are outdated from the list but keep them if status is no already paid
+    reservations.value = reservations.value.filter(
+        (reservation) =>
+            new Date(reservation.end_date) >= new Date() ||
+            (reservation.status_id !== 4 && reservation.status_id !== 3)
+    );
+
+    // remove reservations that are outdated from the list but keep them if status is no already paid
+    reservationsOutdated.value = reservationsOutdated.value.filter(
+        (reservation) =>
+            (new Date(reservation.end_date) < new Date() &&
+                reservation.status_id === 4) ||
+            reservation.status_id === 3
+    );
 });
 
+// Computed property to return the appropriate list based on showOutdated
+const displayedReservations = computed(() => {
+    // If showOutdated is checked, return all reservations
+    if (showOutdated.value) {
+        return [...reservations.value, ...reservationsOutdated.value];
+    }
+    return reservations.value;
+});
+
+// Filtre les réservations en fonction des critères de recherche
 const filteredReservations = computed(() => {
-    let result = reservations.value;
+    let result = displayedReservations.value;
 
+    // Algorithme de recherche
     if (searchQuery.value) {
-        result = performSearch(result);
+        result = result.filter(
+            (reservation) =>
+                reservation.name.toLowerCase().includes(searchQuery.value) ||
+                reservation.surname.toLowerCase().includes(searchQuery.value) ||
+                reservation.email.toLowerCase().includes(searchQuery.value)
+        );
     }
 
-    if (selectedChalet.value || selectedStatus.value) {
-        result = performFilter(result);
+    // Algorithme de filtre
+    if (selectedChalet.value) {
+        result = result.filter(
+            (reservation) => reservation.cottage_id === selectedChalet.value.id
+        );
     }
 
+    // Algorithme de tri
+    if (selectedStatus.value) {
+        result = result.filter(
+            (reservation) => reservation.status_id === selectedStatus.value.id
+        );
+    }
+
+    // Algorithme de tri
     if (sortOption.value) {
-        result = performSort(result);
+        switch (sortOption.value) {
+            case "name":
+                result.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case "reservationDate":
+                result.sort(
+                    (a, b) => new Date(a.start_date) - new Date(b.start_date)
+                );
+                break;
+            case "encodingDate":
+                result.sort(
+                    (a, b) => new Date(a.created_at) - new Date(b.created_at)
+                );
+                break;
+            default:
+        }
     }
 
     return result;
 });
 
-const performSearch = () => {
-    return reservations.filter(
-        (reservation) =>
-            reservation.name.toLowerCase().includes(searchQuery.value) ||
-            reservation.email.toLowerCase().includes(searchQuery.value)
-    );
-};
-
-const performFilter = () => {
-    if (selectedChalet.value) {
-        reservations = reservations.filter(
-            (reservation) => reservation.cottage_id === selectedChalet.value.id
-        );
-    }
-
-    if (selectedStatus.value) {
-        reservations = reservations.filter(
-            (reservation) => reservation.status_id === selectedStatus.value.id
-        );
-    }
-
-    return reservations;
-};
-
-const performSort = () => {
-    switch (sortOption.value) {
-        case "name":
-            return reservations.value.sort((a, b) =>
-                a.name.localeCompare(b.name)
-            );
-        case "reservationDate":
-            return reservations.value.sort(
-                (a, b) => new Date(a.start_date) - new Date(b.start_date)
-            );
-        case "encodingDate":
-            return reservations.value.sort(
-                (a, b) => new Date(a.created_at) - new Date(b.created_at)
-            );
-        default:
-            return reservations;
-    }
-};
-
+// Met à jour le status d'une réservation
 const updateReservationStatus = async (reservation, status) => {
+    const id_status_before = reservation.status_id;
+    const id_status_after = status;
     const response = await axios.post(
         "/api/bookings/updateStatus/" + reservation.id,
         {
@@ -245,14 +283,36 @@ const updateReservationStatus = async (reservation, status) => {
         reservation.status = statuses.value.find(
             (status) => status.id === reservation.status_id
         ).name;
+
+        const response2 = await axios.post(
+            "/api/historique/createHistoriqueBooking",
+            {
+                id_booking: reservation.id,
+                id_status_before: id_status_before,
+                id_status_after: id_status_after,
+                id_user: sessionStorage.getItem("id_user"),
+            }
+        );
+        if (response2.status === 200) {
+            console.log("Historique ajouté");
+        }
     } else {
         console.log("error");
     }
 };
 
+// Retourne la classe css correspondant au status d'une réservation
 const getClassForReservation = (reservation) => {
-    if (reservation.status_id === 3) {
+    if (
+        new Date(reservation.end_date) < new Date() &&
+        reservation.status_id !== 4 &&
+        reservation.status_id !== 3
+    ) {
         return "red";
+    } else if (reservation.status_id === 3) {
+        return "orange";
+    } else if (reservation.status_id === 4) {
+        return "green";
     }
 };
 </script>
@@ -298,6 +358,24 @@ div {
             }
         }
 
+        .showOutdatedDiv {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 0;
+
+            label {
+                cursor: pointer;
+                color: white;
+                font-size: large;
+            }
+
+            input {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -321,8 +399,16 @@ div {
                     transition: background-color 0.5s ease-in-out;
                     background-color: white;
 
+                    &.orange {
+                        background-color: rgba($color: orange, $alpha: 0.8);
+                    }
+
                     &.red {
-                        background-color: $color-secondary;
+                        background-color: rgba($color: red, $alpha: 0.8);
+                    }
+
+                    &.green {
+                        background-color: rgba($color: green, $alpha: 0.8);
                     }
                 }
             }

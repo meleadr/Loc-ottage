@@ -44,6 +44,7 @@ const login = async () => {
         .then((response) => {
             if (response.data.success) {
                 sessionStorage.setItem("token", response.data.token);
+                sessionStorage.setItem("id_user", response.data.user.id);
                 router.push("/admin");
             } else {
                 error.value = response.data.message;

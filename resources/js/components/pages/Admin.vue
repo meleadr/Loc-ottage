@@ -39,6 +39,19 @@
                     <option value="encodingDate">Date d'encodage</option>
                     <option value="name">Nom</option>
                 </select>
+                <div class="showOutdatedDiv">
+                    <input
+                        type="checkbox"
+                        id="showOutdated"
+                        v-model="showOutdated"
+                    />
+                    <label v-if="showOutdated" for="showOutdated"
+                        ><i class="bx bx-show"></i> Voir +
+                    </label>
+                    <label v-else for="showOutdated">
+                        <i class="bx bx-show"></i> Voir -
+                    </label>
+                </div>
             </div>
 
             <!-- Reservation Table -->
@@ -100,7 +113,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 
@@ -108,6 +121,7 @@ const router = useRouter();
 
 // Declarations des variables
 const reservations = ref([]);
+const reservationsOutdated = ref([]);
 const chalets = ref([]);
 const statuses = ref([]);
 const searchText = ref("");
@@ -116,6 +130,7 @@ const selectedStatus = ref("");
 const sortOrder = ref("");
 const searchQuery = computed(() => searchText.value.toLowerCase());
 const sortOption = computed(() => sortOrder.value);
+const showOutdated = ref(false);
 
 // Retourne sur la page d'accueil
 const goBack = () => {
@@ -173,11 +188,37 @@ onMounted(async () => {
             reservation.end_date
         ).toLocaleDateString();
     });
+
+    reservationsOutdated.value = reservations.value;
+
+    // remove reservations that are outdated from the list but keep them if status is no already paid
+    reservations.value = reservations.value.filter(
+        (reservation) =>
+            new Date(reservation.end_date) >= new Date() ||
+            (reservation.status_id !== 4 && reservation.status_id !== 3)
+    );
+
+    // remove reservations that are outdated from the list but keep them if status is no already paid
+    reservationsOutdated.value = reservationsOutdated.value.filter(
+        (reservation) =>
+            (new Date(reservation.end_date) < new Date() &&
+                reservation.status_id === 4) ||
+            reservation.status_id === 3
+    );
+});
+
+// Computed property to return the appropriate list based on showOutdated
+const displayedReservations = computed(() => {
+    // If showOutdated is checked, return all reservations
+    if (showOutdated.value) {
+        return [...reservations.value, ...reservationsOutdated.value];
+    }
+    return reservations.value;
 });
 
 // Filtre les réservations en fonction des critères de recherche
 const filteredReservations = computed(() => {
-    let result = reservations.value;
+    let result = displayedReservations.value;
 
     // Algorithme de recherche
     if (searchQuery.value) {
@@ -247,8 +288,14 @@ const updateReservationStatus = async (reservation, status) => {
 
 // Retourne la classe css correspondant au status d'une réservation
 const getClassForReservation = (reservation) => {
-    if (reservation.status_id === 3) {
+    if (
+        new Date(reservation.end_date) < new Date() &&
+        reservation.status_id !== 4 &&
+        reservation.status_id !== 3
+    ) {
         return "red";
+    } else if (reservation.status_id === 3) {
+        return "orange";
     } else if (reservation.status_id === 4) {
         return "green";
     }
@@ -293,6 +340,24 @@ div {
                 font-size: $font-size-default;
                 border: 1px solid $color-border-dark;
                 border-radius: $border-radius-default;
+            }
+        }
+
+        .showOutdatedDiv {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 0;
+
+            label {
+                cursor: pointer;
+                color: white;
+                font-size: large;
+            }
+
+            input {
+                width: 20px;
+                height: 20px;
             }
         }
 

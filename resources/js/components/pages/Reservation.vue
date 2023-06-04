@@ -6,47 +6,41 @@
             <h3>Choix des options</h3>
             <div class="info options">
                 <div class="option">
-                    <input  
-                        type="checkbox" 
-                        id="allin" 
-                        value="1" 
+                    <input
+                        type="checkbox"
+                        id="allin"
+                        v-model="allInChecked"
                         @change="toggleAllOptions"
                     />
                     <label for="allin">All-in</label>
                 </div>
 
                 <div class="option">
-                    <input  
-                        type="checkbox" 
-                        id="dinner" 
-                        value="2" 
-                        :disabled="allInChecked"
-                        :checked="allInChecked"
-                        @change="addDinnerOption()"
+                    <input
+                        type="checkbox"
+                        id="dinner"
+                        v-model="dinnerChecked"
+                        @change="addDinnerOption"
                     />
                     <label for="dinner">Diner</label>
                 </div>
 
                 <div class="option">
-                    <input  
-                        type="checkbox" 
-                        id="breakfast" 
-                        value="3" 
-                        :disabled="allInChecked"
-                        :checked="allInChecked"
-                        @change="addBreakfastOption()"
+                    <input
+                        type="checkbox"
+                        id="breakfast"
+                        v-model="breakfastChecked"
+                        @change="addBreakfastOption"
                     />
                     <label for="breakfast">Petit-déjeuner</label>
                 </div>
 
                 <div class="option">
-                    <input  
-                        type="checkbox" 
-                        id="spa" 
-                        value="4" 
-                        :disabled="allInChecked"
-                        :checked="allInChecked"
-                        @change="addSpaOption()"
+                    <input
+                        type="checkbox"
+                        id="spa"
+                        v-model="spaChecked"
+                        @change="addSpaOption"
                     />
                     <label for="spa">Spa</label>
                 </div>
@@ -108,13 +102,9 @@
                 <p><strong>Prix total:</strong> {{ totalPrice }} €</p>
                 <p><strong>Options:</strong></p>
                 <ul>
-                    <li v-if="optionSelected == 1">All-in</li>
-                    <li v-else-if="optionSelected == 2">Diner</li>
-                    <li v-else-if="optionSelected == 3">
-                        Petit-déjeuner
+                    <li v-for="option in optionSelected">
+                        {{ option[Object.keys(option)[0]] }}
                     </li>
-                    <li v-else-if="optionSelected == 4">Spa</li>
-                    <li v-else>Aucune</li>
                 </ul>
                 <p>
                     <strong>Nombre d'adultes:</strong> {{ reservation.adult }}
@@ -146,73 +136,107 @@
 </template>
 
 <script setup>
-    import axios from "axios";
-    import { ref } from "vue";
-    import { useRoute, useRouter } from "vue-router";
+import axios from "axios";
+import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
-    const route = useRoute();
-    const router = useRouter();
-    const step = ref(1);
-    const allInChecked = ref(false);
+const route = useRoute();
+const router = useRouter();
+const step = ref(1);
 
-    const optionSelected = ref();
+const allInChecked = ref(false);
+const dinnerChecked = ref(false);
+const breakfastChecked = ref(false);
+const spaChecked = ref(false);
 
-    const reservation = ref({
-        name: "",
-        surname: "",
-        email: "",
-        phone: "",
-        adult: 1,
-        children: 0,
-    });
+const optionSelected = ref([]);
 
-    const id_cottage = route.query.id;
-    const totalPrice = route.query.totalPrice;
-    const startDate = new Date(route.query.startDate).toLocaleDateString("fr-FR");
-    const endDate = new Date(route.query.endDate).toLocaleDateString("fr-FR");
+const updateSelectedOptions = () => {
+    optionSelected.value = [];
+    if (
+        allInChecked.value ||
+        (dinnerChecked.value && breakfastChecked.value && spaChecked.value)
+    )
+        optionSelected.value.push({ 1: "All-in" });
+    else {
+        if (dinnerChecked.value) optionSelected.value.push({ 2: "Diner" });
+        if (breakfastChecked.value)
+            optionSelected.value.push({ 3: "Petit-déjeuner" });
+        if (spaChecked.value) optionSelected.value.push({ 4: "Spa" });
+    }
+};
 
-    const submitReservation = () => {
-        const reservationData = {
-            startDate: startDate,
-            endDate: endDate,
-            totalPrice: totalPrice,
-            name: reservation.value.name,
-            surname: reservation.value.surname,
-            email: reservation.value.email,
-            phone: reservation.value.phone,
-            persons: reservation.value.adult + reservation.value.children,
-            cottage_id: id_cottage,
-            option_id: optionSelected.value,
-            status_id: 1,
-        };
+const toggleAllOptions = () => {
+    const newValue = allInChecked.value;
+    dinnerChecked.value = newValue;
+    breakfastChecked.value = newValue;
+    spaChecked.value = newValue;
 
-        axios.post("/api/bookings/createBooking", reservationData);
+    updateSelectedOptions();
+};
+
+const addDinnerOption = () => {
+    updateAllInChecked();
+    updateSelectedOptions();
+};
+
+const addBreakfastOption = () => {
+    updateAllInChecked();
+    updateSelectedOptions();
+};
+
+const addSpaOption = () => {
+    updateAllInChecked();
+    updateSelectedOptions();
+};
+
+const updateAllInChecked = () => {
+    if (dinnerChecked.value && breakfastChecked.value && spaChecked.value) {
+        allInChecked.value = true;
+    } else {
+        allInChecked.value = false;
+    }
+};
+
+const reservation = ref({
+    name: "",
+    surname: "",
+    email: "",
+    phone: "",
+    adult: 1,
+    children: 0,
+});
+
+const id_cottage = route.query.id;
+const totalPrice = route.query.totalPrice;
+const startDate = new Date(route.query.startDate).toLocaleDateString("fr-FR");
+const endDate = new Date(route.query.endDate).toLocaleDateString("fr-FR");
+
+const submitReservation = () => {
+    const reservationData = {
+        startDate: startDate,
+        endDate: endDate,
+        totalPrice: totalPrice,
+        name: reservation.value.name,
+        surname: reservation.value.surname,
+        email: reservation.value.email,
+        phone: reservation.value.phone,
+        persons: reservation.value.adult + reservation.value.children,
+        cottage_id: id_cottage,
+        option_id: optionSelected.value,
+        status_id: 1,
     };
 
-    const goBack = () => {
-        router.go(-1);
-    };
+    axios.post("/api/bookings/createBooking", reservationData);
+};
 
-    const progressBarWidth = () => {
-        return (step.value / 4) * 100 + "%";
-    };
+const goBack = () => {
+    router.go(-1);
+};
 
-    const toggleAllOptions = () => {
-        allInChecked.value = !allInChecked.value;
-        optionSelected.value = allin.value;
-    }
-
-    const addDinnerOption = () => {
-        optionSelected.value = dinner.value;
-    }
-
-    const addBreakfastOption = () => {
-        optionSelected.value = breakfast.value;
-    }
-
-    const addSpaOption = () => {
-        optionSelected.value = spa.value;
-    }
+const progressBarWidth = () => {
+    return (step.value / 4) * 100 + "%";
+};
 </script>
 
 <style scoped lang="scss">

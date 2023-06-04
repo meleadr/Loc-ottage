@@ -269,6 +269,8 @@ const filteredReservations = computed(() => {
 
 // Met à jour le status d'une réservation
 const updateReservationStatus = async (reservation, status) => {
+    const id_status_before = reservation.status_id;
+    const id_status_after = status;
     const response = await axios.post(
         "/api/bookings/updateStatus/" + reservation.id,
         {
@@ -281,6 +283,19 @@ const updateReservationStatus = async (reservation, status) => {
         reservation.status = statuses.value.find(
             (status) => status.id === reservation.status_id
         ).name;
+
+        const response2 = await axios.post(
+            "/api/historique/createHistoriqueBooking",
+            {
+                id_booking: reservation.id,
+                id_status_before: id_status_before,
+                id_status_after: id_status_after,
+                id_user: sessionStorage.getItem("id_user"),
+            }
+        );
+        if (response2.status === 200) {
+            console.log("Historique ajouté");
+        }
     } else {
         console.log("error");
     }

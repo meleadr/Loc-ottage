@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CottagesController;
 use App\Http\Controllers\API\BookingsController;
+use App\Http\Controllers\API\HistoriqueBookingsController;
 use App\Http\Controllers\API\StatusController;
 
 /*
@@ -34,6 +35,10 @@ Route::controller(CottagesController::class)->group(function () {
 Route::controller(BookingsController::class)->group(function () {
 	Route::get('/bookings/getAllBookings', 'getAllBookings');
 	Route::post('/bookings/updateStatus/{id}', 'updateStatus');
+});
+
+Route::controller(HistoriqueBookingsController::class)->group(function () {
+	Route::post('/historique/createHistoriqueBooking', 'createHistoriqueBooking');
 });
 
 Route::controller(StatusController::class)->group(function () {

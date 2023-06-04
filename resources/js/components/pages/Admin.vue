@@ -134,13 +134,11 @@ const getAllCottages = async () => {
 const getAllReservations = async () => {
     const response = await axios.get("/api/bookings/getAllBookings");
     reservations.value = response.data;
-    console.log(reservations.value);
 };
 
 const getAllStatuses = async () => {
     const response = await axios.get("/api/status/getAllStatus");
     statuses.value = response.data;
-    console.log(statuses.value);
 };
 
 onMounted(async () => {
@@ -160,7 +158,17 @@ onMounted(async () => {
         ).name;
     });
 
-    console.log(reservations.value);
+    reservations.value.forEach((reservation) => {
+        reservation.created_at = new Date(
+            reservation.created_at
+        ).toLocaleDateString();
+        reservation.start_date = new Date(
+            reservation.start_date
+        ).toLocaleDateString();
+        reservation.end_date = new Date(
+            reservation.end_date
+        ).toLocaleDateString();
+    });
 });
 
 const filteredReservations = computed(() => {
@@ -218,7 +226,21 @@ const performSort = () => {
 };
 
 const updateReservationStatus = async (reservation, status) => {
-    // Implement the logic to update reservation status
+    const response = await axios.post(
+        "/api/bookings/updateStatus/" + reservation.id,
+        {
+            status_id: status,
+        }
+    );
+
+    if (response.status === 200) {
+        reservation.status_id = status;
+        reservation.status = statuses.value.find(
+            (status) => status.id === reservation.status_id
+        ).name;
+    } else {
+        console.log("error");
+    }
 };
 
 const cancelReservation = async (reservation) => {

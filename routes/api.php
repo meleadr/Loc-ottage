@@ -33,6 +33,7 @@ Route::controller(CottagesController::class)->group(function () {
 
 Route::controller(BookingsController::class)->group(function () {
 	Route::get('/bookings/getAllBookings', 'getAllBookings');
+	Route::post('/bookings/updateStatus/{id}', 'updateStatus');
 });
 
 Route::controller(StatusController::class)->group(function () {

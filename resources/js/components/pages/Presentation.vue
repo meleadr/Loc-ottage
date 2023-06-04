@@ -78,7 +78,7 @@ import CottageCard from "../CottageCard.vue";
 const cottages = ref([]);
 
 // Fonction pour récupérer le token de l'utilisateur
-const token = localStorage.getItem("token");
+const token = sessionStorage.getItem("token");
 
 // Fonction pour récupérer les cottages de la base de données
 const fetchCottages = async () => {

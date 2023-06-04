@@ -42,6 +42,14 @@ class BookingsController extends Controller
 		return response()->json($booking);
 	}
 
+	public function updateStatus(Request $request, $id)
+	{
+		$booking = Booking::find($id);
+		$booking->status_id = $request->status_id;
+		$booking->save();
+		return response()->json($booking);
+	}
+
 	public function deleteBooking($id)
 	{
 		$booking = Booking::find($id);

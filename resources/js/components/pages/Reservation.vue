@@ -36,7 +36,7 @@
                         :checked="allInChecked"
                         @change="addBreakfastOption()"
                     />
-                    <label for="breakfast">Petit-déjeuner</label>
+                    <label for="breakfast">Déjeuner</label>
                 </div>
 
                 <div class="option">
@@ -137,19 +137,18 @@
             </div>
         </div>
 
-        <!-- ProgressBar & button -->
-        <div>
-            <div class="progressBar" :style="{ width: progressBarWidth() }"></div>
-            <div class="div_button">
-                <div class="button" @click="step > 1 ? step-- : goBack()">
-                    Retour
-                </div>
-                <div
-                    class="button"
-                    @click="step < 4 ? step++ : submitReservation()"
-                >
-                    {{ step < 4 ? "Suivant" : "Valider" }}
-                </div>
+    </div>
+    <!-- ProgressBar & button -->
+    <div class="bar_button">
+        <div class="div_button">
+            <div class="button" @click="step > 1 ? step-- : goBack()">
+                Retour
+            </div>
+            <div
+                class="button"
+                @click="step < 4 ? step++ : submitReservation()"
+            >
+                {{ step < 4 ? "Suivant" : "Valider" }}
             </div>
         </div>
     </div>
@@ -203,10 +202,6 @@
         router.go(-1);
     };
 
-    const progressBarWidth = () => {
-        return (step.value / 4) * 100 + "%";
-    };
-
     const toggleAllOptions = () => {
         allInChecked.value = !allInChecked.value;
         optionSelected.value = allin.value;
@@ -228,86 +223,99 @@
 <style scoped lang="scss">
 @use "@sass/_variables" as *;
 
-h1 {
-    color: $color-secondary;
-    text-align: center;
-    margin-top: $spacing-large;
-    margin-bottom: $spacing-large;
-}
 .container {
-    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 80%;
+    height: 100%;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    height: 400px;
+}
+
+h1 {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+h3 {
+    margin-bottom: 1rem;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     margin: 0 auto;
 
-    h3 {
-        font-size: $font-size-large;
-        color: $color-primary-dark;
-        margin-bottom: $spacing-default;
-        text-align: center;
+    .option {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 1rem;
     }
 
     label {
-        display: block;
-        font-size: $font-size-default;
-        color: $color-text-dark;
-
-        & input {
-            display: block;
-            width: 100%;
-            padding: $spacing-small;
-            font-size: $font-size-default;
-            border: 1px solid $color-border-dark;
-            border-radius: $border-radius-default;
-            margin-top: $spacing-small;
-        }
-    }
-
-    .info {
-        padding: $spacing-large;
-        min-height: 50vh;
-        overflow: scroll;
-
-        p {
-            strong {
-                font-size: $font-size-large;
-                color: $color-secondary;
-            }
-        }
-    }
-
-    .recap {
-        ul {
-            list-style: none;
-            padding-left: 0;
-            margin-top: $spacing-small;
-            margin-bottom: $spacing-small;
-        }
-    }
-
-    .options {
         display: flex;
         flex-direction: column;
-        margin-top: $spacing-large;
-
-        .option {
-            display: flex;
-            gap: $spacing-default;
-            margin-bottom: $spacing-default;
-        }
-    }
-
-    .div_button {
-        display: flex;
-        justify-content: space-between;
-        margin-top: $spacing-large;
-    }
-
-    .progressBar {
+        align-items: center;
+        justify-content: center;
         width: 100%;
-        height: 20px;
-        background-color: $color-primary-dark;
-        border-radius: $border-radius-default;
-        margin-top: $spacing-large;
-        transition: width 0.5s ease-in-out;
+        
     }
 }
+
+input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+}
+.recap {
+    p {
+        margin-bottom: 1rem;
+    }
+
+    ul {
+        margin-bottom: 1rem;
+    }
+
+    li {
+        margin-left: 1rem;
+    }
+
+    strong {
+        margin-right: 0.5rem;
+    }
+}
+
+.bar_button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    margin: 0 auto;
+    .progressBar {
+        height: 0.5rem;
+        background-color: #ccc;
+        border-radius: $border-radius-default;
+        transition: width 0.5s ease-in-out;
+    }
+    
+    .div_button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 5%;
+        margin-top: 2rem;
+    }
+}
+
+
 </style>

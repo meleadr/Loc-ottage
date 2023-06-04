@@ -1,6 +1,7 @@
 <template>
     <!-- SECTION PRESENTATION -->
     <section class="presentation hero full-screen">
+        <img src="/assets/images/logo.png" alt="logo" />
         <div class="">
             <h1>Loc'ottage</h1>
             <p>
@@ -96,6 +97,14 @@ onMounted(fetchCottages);
     background-attachment: fixed;
     position: relative;
     z-index: 2;
+
+    img {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 8vw;
+        height: auto;
+    }
 }
 
 .hero::after {

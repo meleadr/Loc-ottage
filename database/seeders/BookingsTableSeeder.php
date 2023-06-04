@@ -7,11 +7,16 @@ use Illuminate\Database\Seeder;
 
 class BookingsTableSeeder extends Seeder
 {
+	/**
+	 * Seed the bookings table.
+	 *
+	 * @return void
+	 */
     public function run()
     {
         DB::table('bookings')->insert([
             'start_date' => '2023-06-01',
-            'end_date' => '2023-06-07',
+            'end_date' => '2023-06-03',
             'name' => 'John',
             'surname' => 'Doe',
             'email' => 'john.doe@example.com',
@@ -35,7 +40,7 @@ class BookingsTableSeeder extends Seeder
             'cottage_id' => 3,  // assuming you have a cottage with this id
             'option_id' => 3,   // assuming you have an option with this id
             'status_id' => 1,   // assuming you have a status with this id
-            'created_at' => now(),
+            'created_at' => '2023-06-01',
             'updated_at' => now(),
         ]);
 
@@ -50,7 +55,7 @@ class BookingsTableSeeder extends Seeder
             'cottage_id' => 2,  // assuming you have a cottage with this id
             'option_id' => 4,   // assuming you have an option with this id
             'status_id' => 1,   // assuming you have a status with this id
-            'created_at' => now(),
+            'created_at' => '2023-06-02',
             'updated_at' => now(),
         ]);
 

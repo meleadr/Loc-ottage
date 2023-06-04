@@ -11,7 +11,7 @@
                 <input
                     type="text"
                     v-model="searchText"
-                    placeholder="Rechercher..."
+                    placeholder="Nom, prenom, mail..."
                     @input="performSearch"
                 />
                 <select v-model="selectedChalet" @change="performFilter">
@@ -194,6 +194,7 @@ const performSearch = () => {
     return reservations.value.filter(
         (reservation) =>
             reservation.name.toLowerCase().includes(searchQuery.value) ||
+            reservation.surname.toLowerCase().includes(searchQuery.value) ||
             reservation.email.toLowerCase().includes(searchQuery.value)
     );
 };
@@ -330,6 +331,10 @@ div {
                 tr {
                     transition: background-color 0.5s ease-in-out;
                     background-color: white;
+
+                    &.orange {
+                        background-color: rgba($color: orange, $alpha: 0.8);
+                    }
 
                     &.red {
                         background-color: rgba($color: red, $alpha: 0.8);

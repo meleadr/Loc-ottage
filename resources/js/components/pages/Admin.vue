@@ -12,9 +12,8 @@
                     type="text"
                     v-model="searchText"
                     placeholder="Nom, prenom, mail..."
-                    @input="performSearch"
                 />
-                <select v-model="selectedChalet" @change="performFilter">
+                <select v-model="selectedChalet">
                     <option value="">Tous les chalets</option>
                     <option
                         v-for="chalet in chalets"
@@ -24,7 +23,7 @@
                         {{ chalet.name }}
                     </option>
                 </select>
-                <select v-model="selectedStatus" @change="performFilter">
+                <select v-model="selectedStatus">
                     <option value="">Tous les status</option>
                     <option
                         v-for="status in statuses"
@@ -34,7 +33,7 @@
                         {{ status.name }}
                     </option>
                 </select>
-                <select v-model="sortOrder" @change="performSort">
+                <select v-model="sortOrder">
                     <option value="">Trier par...</option>
                     <option value="reservationDate">Date de réservation</option>
                     <option value="encodingDate">Date d'encodage</option>
@@ -180,71 +179,52 @@ onMounted(async () => {
 const filteredReservations = computed(() => {
     let result = reservations.value;
 
+    // Algorithme de recherche
     if (searchQuery.value) {
-        result = performSearch();
+        result = result.filter(
+            (reservation) =>
+                reservation.name.toLowerCase().includes(searchQuery.value) ||
+                reservation.surname.toLowerCase().includes(searchQuery.value) ||
+                reservation.email.toLowerCase().includes(searchQuery.value)
+        );
     }
 
-    if (selectedChalet.value || selectedStatus.value) {
-        result = performFilter();
-    }
-
-    if (sortOption.value) {
-        result = performSort();
-    }
-
-    return result;
-});
-
-// Fonctions de recherche, filtre et tri
-const performSearch = () => {
-    return reservations.value.filter(
-        (reservation) =>
-            reservation.name.toLowerCase().includes(searchQuery.value) ||
-            reservation.surname.toLowerCase().includes(searchQuery.value) ||
-            reservation.email.toLowerCase().includes(searchQuery.value)
-    );
-};
-
-const performFilter = () => {
-    let result = reservations.value;
-
+    // Algorithme de filtre
     if (selectedChalet.value) {
         result = result.filter(
             (reservation) => reservation.cottage_id === selectedChalet.value.id
         );
     }
 
+    // Algorithme de tri
     if (selectedStatus.value) {
         result = result.filter(
             (reservation) => reservation.status_id === selectedStatus.value.id
         );
     }
 
-    return result;
-};
-
-const performSort = () => {
-    let result = reservations.value;
-    switch (sortOption.value) {
-        case "name":
-            result.sort((a, b) => a.name.localeCompare(b.name));
-            break;
-        case "reservationDate":
-            result.sort(
-                (a, b) => new Date(a.start_date) - new Date(b.start_date)
-            );
-            break;
-        case "encodingDate":
-            result.sort(
-                (a, b) => new Date(a.created_at) - new Date(b.created_at)
-            );
-            break;
-        default:
-        // If no sorting option is selected, we return the reservations as they are.
+    // Algorithme de tri
+    if (sortOption.value) {
+        switch (sortOption.value) {
+            case "name":
+                result.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case "reservationDate":
+                result.sort(
+                    (a, b) => new Date(a.start_date) - new Date(b.start_date)
+                );
+                break;
+            case "encodingDate":
+                result.sort(
+                    (a, b) => new Date(a.created_at) - new Date(b.created_at)
+                );
+                break;
+            default:
+        }
     }
 
     return result;
-};
+});
 
 // Met à jour le status d'une réservation
 const updateReservationStatus = async (reservation, status) => {

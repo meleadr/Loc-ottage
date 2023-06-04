@@ -20,8 +20,8 @@ class BookingFactory extends Factory
     public function definition(): array
     {
         $cottage = Cottage::inRandomOrder()->first();
-        $start_date = Carbon::now()->addDays(rand(1, 365));
-        $end_date = (clone $start_date)->addDays(rand(1, 14));
+        $start_date = Carbon::now()->addDays(rand(1, 500));
+        $end_date = (clone $start_date)->addDays(rand(1, 10));
 
         // Check for overlapping bookings
         while (Booking::where('cottage_id', $cottage->id)
@@ -30,8 +30,8 @@ class BookingFactory extends Factory
                     ->orWhereBetween('end_date', [$start_date, $end_date]);
             })->exists()) {
             // If overlap, try new dates
-            $start_date = Carbon::now()->addDays(rand(1, 365));
-            $end_date = (clone $start_date)->addDays(rand(1, 14));
+            $start_date = Carbon::now()->addDays(rand(1, 500));
+            $end_date = (clone $start_date)->addDays(rand(1, 10));
         }
 
         return [
@@ -44,7 +44,6 @@ class BookingFactory extends Factory
             'phone' => $this->faker->phoneNumber,
             'persons' => $this->faker->numberBetween(1, 10),
             'cottage_id' => $cottage->id,
-            'option_id' => 1,
             'status_id' => $this->faker->numberBetween(1, 4),
         ];
     }

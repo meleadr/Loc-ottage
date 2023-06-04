@@ -23,8 +23,6 @@ return new class extends Migration
             $table->integer('persons');
             $table->unsignedBigInteger('cottage_id')->nullable();
             $table->foreign('cottage_id')->references('id')->on('cottages');
-            $table->unsignedBigInteger('option_id')->nullable();
-            $table->foreign('option_id')->references('id')->on('options');
             $table->unsignedBigInteger('status_id')->nullable();
             $table->foreign('status_id')->references('id')->on('status');
             $table->timestamps();

@@ -24,7 +24,6 @@ class BookingsTableSeeder extends Seeder
             'phone' => '1234567890',
             'persons' => 2,
             'cottage_id' => 1,  // assuming you have a cottage with this id
-            'option_id' => 1,   // assuming you have an option with this id
             'status_id' => 1,   // assuming you have a status with this id
             'created_at' => now(),
             'updated_at' => now(),

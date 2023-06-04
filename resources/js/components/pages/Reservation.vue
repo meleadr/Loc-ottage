@@ -90,6 +90,7 @@
                     Téléphone:
                     <input v-model="reservation.phone" type="tel" required />
                 </label>
+                <p v-if="error" class="error">{{ error }}</p>
             </div>
         </div>
 
@@ -120,6 +121,16 @@
             </div>
         </div>
 
+        <div v-show="step === 5">
+            <h3>Reservation effectuée</h3>
+            <div class="info">
+                <p>
+                    Votre reservation a bien été effectuée, vous allez être
+                    redirigé vers la page d'accueil.
+                </p>
+            </div>
+        </div>
+
         <div class="progressBar" :style="{ width: progressBarWidth() }"></div>
         <div class="div_button">
             <div class="button" @click="step > 1 ? step-- : goBack()">
@@ -127,7 +138,10 @@
             </div>
             <div
                 class="button"
-                @click="step < 4 ? step++ : submitReservation()"
+                @click="
+                    step < 4 ? checkAndIncrementStep() : submitReservation()
+                "
+                v-show="step <= 4"
             >
                 {{ step < 4 ? "Suivant" : "Valider" }}
             </div>
@@ -148,6 +162,8 @@ const allInChecked = ref(false);
 const dinnerChecked = ref(false);
 const breakfastChecked = ref(false);
 const spaChecked = ref(false);
+
+const error = ref("");
 
 const optionSelected = ref([]);
 
@@ -207,12 +223,33 @@ const reservation = ref({
     children: 0,
 });
 
+const checkAndIncrementStep = () => {
+    if (step.value === 3) {
+        if (
+            reservation.value.name !== "" &&
+            reservation.value.surname !== "" &&
+            reservation.value.email !== "" &&
+            reservation.value.phone !== ""
+        ) {
+            step.value++;
+        } else {
+            error.value = "Veuillez remplir tous les champs";
+        }
+    } else {
+        step.value++;
+    }
+};
+
 const id_cottage = route.query.id;
 const totalPrice = route.query.totalPrice;
 const startDate = new Date(route.query.startDate).toLocaleDateString("fr-FR");
 const endDate = new Date(route.query.endDate).toLocaleDateString("fr-FR");
 
 const submitReservation = () => {
+    step.value = 5;
+    const options = optionSelected.value.map((option) => {
+        return { id: Object.keys(option)[0] };
+    });
     const reservationData = {
         startDate: startDate,
         endDate: endDate,
@@ -222,12 +259,16 @@ const submitReservation = () => {
         email: reservation.value.email,
         phone: reservation.value.phone,
         persons: reservation.value.adult + reservation.value.children,
-        options: optionSelected.value,
+        options: options,
         cottage_id: id_cottage,
         status_id: 1,
     };
 
-    axios.post("/api/bookings/createBooking", reservationData);
+    axios.post("/api/bookings/createBooking", reservationData).then(() => {
+        setTimeout(() => {
+            router.push({ name: "Presentation" });
+        }, 3000);
+    });
 };
 
 const goBack = () => {
@@ -235,7 +276,7 @@ const goBack = () => {
 };
 
 const progressBarWidth = () => {
-    return (step.value / 4) * 100 + "%";
+    return (step.value / 5) * 100 + "%";
 };
 </script>
 
@@ -286,6 +327,10 @@ h1 {
                 font-size: $font-size-large;
                 color: $color-secondary;
             }
+        }
+
+        .error {
+            color: red;
         }
     }
 

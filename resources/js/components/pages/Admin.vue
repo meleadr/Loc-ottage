@@ -85,6 +85,7 @@
                                 Marqué comme payé
                             </button>
                             <button
+                                v-show="reservation.status_id !== 3"
                                 @click="updateReservationStatus(reservation, 3)"
                             >
                                 Annuler
@@ -175,22 +176,22 @@ const filteredReservations = computed(() => {
     let result = reservations.value;
 
     if (searchQuery.value) {
-        result = performSearch(result);
+        result = performSearch();
     }
 
     if (selectedChalet.value || selectedStatus.value) {
-        result = performFilter(result);
+        result = performFilter();
     }
 
     if (sortOption.value) {
-        result = performSort(result);
+        result = performSort();
     }
 
     return result;
 });
 
 const performSearch = () => {
-    return reservations.filter(
+    return reservations.value.filter(
         (reservation) =>
             reservation.name.toLowerCase().includes(searchQuery.value) ||
             reservation.email.toLowerCase().includes(searchQuery.value)
@@ -198,38 +199,45 @@ const performSearch = () => {
 };
 
 const performFilter = () => {
+    let result = reservations.value;
+
     if (selectedChalet.value) {
-        reservations = reservations.filter(
+        result = result.filter(
             (reservation) => reservation.cottage_id === selectedChalet.value.id
         );
     }
 
     if (selectedStatus.value) {
-        reservations = reservations.filter(
+        result = result.filter(
             (reservation) => reservation.status_id === selectedStatus.value.id
         );
     }
 
-    return reservations;
+    return result;
 };
 
 const performSort = () => {
+    let result = [...reservations.value];
+
     switch (sortOption.value) {
         case "name":
-            return reservations.value.sort((a, b) =>
-                a.name.localeCompare(b.name)
-            );
+            result.sort((a, b) => a.name.localeCompare(b.name));
+            break;
         case "reservationDate":
-            return reservations.value.sort(
+            result.sort(
                 (a, b) => new Date(a.start_date) - new Date(b.start_date)
             );
+            break;
         case "encodingDate":
-            return reservations.value.sort(
+            result.sort(
                 (a, b) => new Date(a.created_at) - new Date(b.created_at)
             );
+            break;
         default:
-            return reservations;
+        // If no sorting option is selected, we return the reservations as they are.
     }
+
+    return result;
 };
 
 const updateReservationStatus = async (reservation, status) => {
@@ -253,6 +261,8 @@ const updateReservationStatus = async (reservation, status) => {
 const getClassForReservation = (reservation) => {
     if (reservation.status_id === 3) {
         return "red";
+    } else if (reservation.status_id === 4) {
+        return "green";
     }
 };
 </script>
@@ -322,7 +332,11 @@ div {
                     background-color: white;
 
                     &.red {
-                        background-color: $color-secondary;
+                        background-color: rgba($color: red, $alpha: 0.8);
+                    }
+
+                    &.green {
+                        background-color: rgba($color: green, $alpha: 0.8);
                     }
                 }
             }

@@ -2,6 +2,7 @@
     <!-- SECTION PRESENTATION -->
     <section class="presentation hero full-screen">
         <img src="/assets/images/logo.png" alt="logo" />
+        <a href="/admin" class="button admin" v-show="token">Admin</a>
         <div class="">
             <h1>Loc'ottage</h1>
             <p>
@@ -76,6 +77,9 @@ import CottageCard from "../CottageCard.vue";
 // Déclaration des variables
 const cottages = ref([]);
 
+// Fonction pour récupérer le token de l'utilisateur
+const token = localStorage.getItem("token");
+
 // Fonction pour récupérer les cottages de la base de données
 const fetchCottages = async () => {
     // use axios to fetch data from the API
@@ -104,6 +108,16 @@ onMounted(fetchCottages);
         left: 10px;
         width: 8vw;
         height: auto;
+    }
+
+    .admin {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        border: 0;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-size: $font-size-default;
     }
 }
 

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class BookingsController extends Controller
 {
-    public function getAllBookings()
+	public function getAllBookings()
 	{
 		$bookings = Booking::all();
 		return response()->json($bookings);
@@ -23,11 +23,19 @@ class BookingsController extends Controller
 	public function createBooking(Request $request)
 	{
 		$booking = new Booking();
+		$booking->start_date = $request->startDate;
+		$booking->end_date = $request->endDate;
+		$booking->price = $request->totalPrice;
+		$booking->name = $request->name;
+		$booking->surname = $request->surname;
+		$booking->email = $request->email;
+		$booking->phone = $request->phone;
+		$booking->persons = $request->persons;
 		$booking->cottage_id = $request->cottage_id;
-		$booking->user_id = $request->user_id;
-		$booking->start_date = $request->start_date;
-		$booking->end_date = $request->end_date;
+		$booking->option_id = $request->option_id;
+		$booking->status_id = $request->status_id;
 		$booking->save();
+
 		return response()->json($booking);
 	}
 

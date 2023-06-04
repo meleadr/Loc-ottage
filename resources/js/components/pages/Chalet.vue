@@ -117,6 +117,7 @@ const goReservation = () => {
         router.push({
             name: "Reservation",
             query: {
+                id: id,
                 chalet: chalet.value.title,
                 startDate: date.start,
                 endDate: date.end,

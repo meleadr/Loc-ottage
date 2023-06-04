@@ -19,11 +19,11 @@ use App\Http\Controllers\API\StatusController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
 
 Route::controller(AuthController::class)->group(function () {
-    Route::post('/auth/login', 'login');
+	Route::post('/auth/login', 'login');
 });
 
 Route::controller(CottagesController::class)->group(function () {
@@ -34,6 +34,7 @@ Route::controller(CottagesController::class)->group(function () {
 Route::controller(BookingsController::class)->group(function () {
 	Route::get('/bookings/getAllBookings', 'getAllBookings');
 	Route::post('/bookings/updateStatus/{id}', 'updateStatus');
+	Route::post('/bookings/createBooking', 'createBooking');
 });
 
 Route::controller(StatusController::class)->group(function () {

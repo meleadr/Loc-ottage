@@ -9,16 +9,17 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BookingFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
-    {
+	/**
+	 * Define the model's default state.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function definition(): array
+	{
 		return [
-            'start_date' => $this->faker->dateTimeBetween('now', '+1 years'),
+			'start_date' => $this->faker->dateTimeBetween('now', '+1 years'),
 			'end_date' => $this->faker->dateTimeBetween('+1 years', '+1 years +6 months'),
+			'price' => $this->faker->numberBetween(100, 1000),
 			'name' => $this->faker->name,
 			'surname' => $this->faker->lastName,
 			'mail' => $this->faker->unique()->safeEmail(),
@@ -28,6 +29,6 @@ class BookingFactory extends Factory
 			'cottage_id' => $this->faker->numberBetween(1, 10),
 			'option_id' => $this->faker->numberBetween(1, 10),
 			'status_id' => $this->faker->numberBetween(1, 10),
-        ];
-    }
+		];
+	}
 }

@@ -12,5 +12,5 @@ class Booking extends Model
     protected $table = 'bookings';
 
     // Définis les colonnes que tu souhaites utiliser
-    protected $fillable = ['cottage_id', 'user_id', 'satus_id', 'start_date', 'end_date', 'persons', 'price'];
+    protected $fillable = ['cottage_id', 'user_id', 'status_id', 'start_date', 'end_date', 'persons', 'price'];
 }

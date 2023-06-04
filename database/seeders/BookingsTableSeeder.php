@@ -12,6 +12,7 @@ class BookingsTableSeeder extends Seeder
         DB::table('bookings')->insert([
             'start_date' => '2023-06-01',
             'end_date' => '2023-06-07',
+            'price' => 1000,
             'name' => 'John',
             'surname' => 'Doe',
             'email' => 'john.doe@example.com',
@@ -27,6 +28,7 @@ class BookingsTableSeeder extends Seeder
         DB::table('bookings')->insert([
             'start_date' => '2023-11-23',
             'end_date' => '2023-11-24',
+            'price' => 3000,
             'name' => 'Marie',
             'surname' => 'Jane',
             'email' => 'marie.jane@example.com',
@@ -42,6 +44,7 @@ class BookingsTableSeeder extends Seeder
         DB::table('bookings')->insert([
             'start_date' => '2023-08-21',
             'end_date' => '2023-08-24',
+            'price' => 400,
             'name' => 'Sarah',
             'surname' => 'Croche',
             'email' => 'sarah.croche@example.com',
@@ -57,6 +60,7 @@ class BookingsTableSeeder extends Seeder
         DB::table('bookings')->insert([
             'start_date' => '2023-12-22',
             'end_date' => '2023-12-24',
+            'price' => 4334,
             'name' => 'Alex',
             'surname' => 'Térieur',
             'email' => 'alex.térieur@example.com',

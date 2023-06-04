@@ -21,7 +21,7 @@
                         :key="chalet"
                         :value="chalet"
                     >
-                        {{ chalet }}
+                        {{ chalet.name }}
                     </option>
                 </select>
                 <select v-model="selectedStatus" @change="performFilter">
@@ -31,7 +31,7 @@
                         :key="status"
                         :value="status"
                     >
-                        {{ status }}
+                        {{ status.name }}
                     </option>
                 </select>
                 <select v-model="sortOrder" @change="performSort">
@@ -178,7 +178,7 @@ const filteredReservations = computed(() => {
         result = performSearch(result);
     }
 
-    if (filterOption.value) {
+    if (selectedChalet.value || selectedStatus.value) {
         result = performFilter(result);
     }
 
@@ -192,33 +192,40 @@ const filteredReservations = computed(() => {
 const performSearch = () => {
     return reservations.filter(
         (reservation) =>
-            reservation.name.includes(searchQuery.value) ||
-            reservation.email.includes(searchQuery.value)
+            reservation.name.toLowerCase().includes(searchQuery.value) ||
+            reservation.email.toLowerCase().includes(searchQuery.value)
     );
 };
 
 const performFilter = () => {
-    switch (filterOption.value) {
-        case "status":
-            return reservations.filter(
-                (reservation) => reservation.status === "paid"
-            );
-        case "chalet":
-            return reservations.filter(
-                (reservation) => reservation.chalet === "chaletName"
-            );
-        default:
-            return reservations;
+    if (selectedChalet.value) {
+        reservations = reservations.filter(
+            (reservation) => reservation.cottage_id === selectedChalet.value.id
+        );
     }
+
+    if (selectedStatus.value) {
+        reservations = reservations.filter(
+            (reservation) => reservation.status_id === selectedStatus.value.id
+        );
+    }
+
+    return reservations;
 };
 
 const performSort = () => {
     switch (sortOption.value) {
         case "name":
-            return reservations.sort((a, b) => a.name.localeCompare(b.name));
-        case "date":
-            return reservations.sort(
-                (a, b) => new Date(a.date) - new Date(b.date)
+            return reservations.value.sort((a, b) =>
+                a.name.localeCompare(b.name)
+            );
+        case "reservationDate":
+            return reservations.value.sort(
+                (a, b) => new Date(a.start_date) - new Date(b.start_date)
+            );
+        case "encodingDate":
+            return reservations.value.sort(
+                (a, b) => new Date(a.created_at) - new Date(b.created_at)
             );
         default:
             return reservations;
@@ -241,10 +248,6 @@ const updateReservationStatus = async (reservation, status) => {
     } else {
         console.log("error");
     }
-};
-
-const cancelReservation = async (reservation) => {
-    // Implement the logic to cancel reservation
 };
 
 const getClassForReservation = (reservation) => {

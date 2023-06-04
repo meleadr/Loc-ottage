@@ -23,8 +23,8 @@ class BookingsController extends Controller
 	public function createBooking(Request $request)
 	{
 		$booking = new Booking();
-		$booking->start_date = $request->startDate;
-		$booking->end_date = $request->endDate;
+		$booking->start_date = date('Y-m-d', strtotime($request->startDate));
+		$booking->end_date = date('Y-m-d', strtotime($request->endDate));
 		$booking->price = $request->totalPrice;
 		$booking->name = $request->name;
 		$booking->surname = $request->surname;

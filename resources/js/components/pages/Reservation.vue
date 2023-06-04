@@ -6,20 +6,20 @@
             <h3>Choix des options</h3>
             <div class="info options">
                 <div class="option">
-                    <input  
-                        type="checkbox" 
-                        id="allin" 
-                        value="1" 
+                    <input
+                        type="checkbox"
+                        id="allin"
+                        value="1"
                         @change="toggleAllOptions"
                     />
                     <label for="allin">All-in</label>
                 </div>
 
                 <div class="option">
-                    <input  
-                        type="checkbox" 
-                        id="dinner" 
-                        value="2" 
+                    <input
+                        type="checkbox"
+                        id="dinner"
+                        value="2"
                         :disabled="allInChecked"
                         :checked="allInChecked"
                         @change="addDinnerOption()"
@@ -28,10 +28,10 @@
                 </div>
 
                 <div class="option">
-                    <input  
-                        type="checkbox" 
-                        id="breakfast" 
-                        value="3" 
+                    <input
+                        type="checkbox"
+                        id="breakfast"
+                        value="3"
                         :disabled="allInChecked"
                         :checked="allInChecked"
                         @change="addBreakfastOption()"
@@ -40,10 +40,10 @@
                 </div>
 
                 <div class="option">
-                    <input  
-                        type="checkbox" 
-                        id="spa" 
-                        value="4" 
+                    <input
+                        type="checkbox"
+                        id="spa"
+                        value="4"
                         :disabled="allInChecked"
                         :checked="allInChecked"
                         @change="addSpaOption()"
@@ -110,9 +110,7 @@
                 <ul>
                     <li v-if="optionSelected == 1">All-in</li>
                     <li v-else-if="optionSelected == 2">Diner</li>
-                    <li v-else-if="optionSelected == 3">
-                        Petit-déjeuner
-                    </li>
+                    <li v-else-if="optionSelected == 3">Petit-déjeuner</li>
                     <li v-else-if="optionSelected == 4">Spa</li>
                     <li v-else>Aucune</li>
                 </ul>
@@ -146,73 +144,73 @@
 </template>
 
 <script setup>
-    import axios from "axios";
+import axios from "axios";
 import { ref } from "vue";
-    import { useRoute, useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
-    const route = useRoute();
-    const router = useRouter();
-    const step = ref(1);
-    const allInChecked = ref(false);
+const route = useRoute();
+const router = useRouter();
+const step = ref(1);
+const allInChecked = ref(false);
 
-    const optionSelected = ref();
+const optionSelected = ref();
 
-    const reservation = ref({
-        name: "",
-        surname: "",
-        email: "",
-        phone: "",
-        adult: 1,
-        children: 0,
-    });
+const reservation = ref({
+    name: "",
+    surname: "",
+    email: "",
+    phone: "",
+    adult: 1,
+    children: 0,
+});
 
-    const id_cottage = route.query.id;
-    const totalPrice = route.query.totalPrice;
-    const startDate = new Date(route.query.startDate).toLocaleDateString("fr-FR");
-    const endDate = new Date(route.query.endDate).toLocaleDateString("fr-FR");
+const id_cottage = route.query.id;
+const totalPrice = route.query.totalPrice;
+const startDate = new Date(route.query.startDate).toLocaleDateString("fr-FR");
+const endDate = new Date(route.query.endDate).toLocaleDateString("fr-FR");
 
-    const submitReservation = () => {
-        const reservationData = {
-            startDate: startDate,
-            endDate: endDate,
-            totalPrice: totalPrice,
-            name: reservation.value.name,
-            surname: reservation.value.surname,
-            email: reservation.value.email,
-            phone: reservation.value.phone,
-            persons: reservation.value.adult + reservation.value.children,
-            cottage_id: id_cottage,
-            option_id: optionSelected.value,
-            status_id: 1,
-        };
-
-        axios.post("/api/bookings/createBooking", reservationData);
+const submitReservation = () => {
+    const reservationData = {
+        startDate: Date(route.query.startDate),
+        endDate: Date(route.query.endDate),
+        totalPrice: totalPrice,
+        name: reservation.value.name,
+        surname: reservation.value.surname,
+        email: reservation.value.email,
+        phone: reservation.value.phone,
+        persons: reservation.value.adult + reservation.value.children,
+        cottage_id: id_cottage,
+        option_id: optionSelected.value,
+        status_id: 1,
     };
 
-    const goBack = () => {
-        router.go(-1);
-    };
+    axios.post("/api/bookings/createBooking", reservationData);
+};
 
-    const progressBarWidth = () => {
-        return (step.value / 4) * 100 + "%";
-    };
+const goBack = () => {
+    router.go(-1);
+};
 
-    const toggleAllOptions = () => {
-        allInChecked.value = !allInChecked.value;
-        optionSelected.value = allin.value;
-    }
+const progressBarWidth = () => {
+    return (step.value / 4) * 100 + "%";
+};
 
-    const addDinnerOption = () => {
-        optionSelected.value = dinner.value;
-    }
+const toggleAllOptions = () => {
+    allInChecked.value = !allInChecked.value;
+    optionSelected.value = allin.value;
+};
 
-    const addBreakfastOption = () => {
-        optionSelected.value = breakfast.value;
-    }
+const addDinnerOption = () => {
+    optionSelected.value = dinner.value;
+};
 
-    const addSpaOption = () => {
-        optionSelected.value = spa.value;
-    }
+const addBreakfastOption = () => {
+    optionSelected.value = breakfast.value;
+};
+
+const addSpaOption = () => {
+    optionSelected.value = spa.value;
+};
 </script>
 
 <style scoped lang="scss">

@@ -38,7 +38,9 @@ class BookingsController extends Controller
 		$booking->phone = $request->phone;
 		$booking->persons = $request->persons;
 		$booking->cottage_id = $request->cottage_id;
-		$booking->option_id = $request->option_id;
+		 foreach($request->options as $option) {
+			$booking->options()->attach($option['id']);
+		}
 		$booking->status_id = $request->status_id;
 		$booking->save();
 

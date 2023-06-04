@@ -222,8 +222,8 @@ const submitReservation = () => {
         email: reservation.value.email,
         phone: reservation.value.phone,
         persons: reservation.value.adult + reservation.value.children,
+        options: optionSelected.value,
         cottage_id: id_cottage,
-        option_id: optionSelected.value,
         status_id: 1,
     };
 

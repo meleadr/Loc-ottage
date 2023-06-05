@@ -22,20 +22,14 @@ class BookingsController extends Controller
 		return response()->json($bookings);
 	}
 
-	public function getBooking($id)
-	{
-		$booking = Booking::find($id);
-		return response()->json($booking);
-	}
-
 	public function createBooking(Request $request)
 	{
 		DB::beginTransaction();
 
 		try {
 			$booking = new Booking();
-			$booking->start_date = date('Y-m-d', strtotime($request->startDate));
-			$booking->end_date = date('Y-m-d', strtotime($request->endDate));
+			$booking->start_date = $request->start_date;
+			$booking->end_date = $request->end_date;
 			$booking->price = $request->totalPrice;
 			$booking->name = $request->name;
 			$booking->surname = $request->surname;

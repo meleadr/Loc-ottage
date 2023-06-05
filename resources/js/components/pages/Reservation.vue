@@ -246,14 +246,24 @@ const totalPrice = route.query.totalPrice;
 const startDate = new Date(route.query.startDate).toLocaleDateString("fr-FR");
 const endDate = new Date(route.query.endDate).toLocaleDateString("fr-FR");
 
+const startDateFormatted = new Date(route.query.startDate);
+const startDateFormattedString = `${startDateFormatted.getFullYear()}-${
+    startDateFormatted.getMonth() + 1
+}-${startDateFormatted.getDate()}`;
+
+const endDateFormatted = new Date(route.query.endDate);
+const endDateFormattedString = `${endDateFormatted.getFullYear()}-${
+    endDateFormatted.getMonth() + 1
+}-${endDateFormatted.getDate()}`;
+
 const submitReservation = () => {
     step.value = 5;
     const options = optionSelected.value.map((option) => {
         return { id: Object.keys(option)[0] };
     });
     const reservationData = {
-        startDate: route.query.startDate,
-        endDate: route.query.endDate,
+        start_date: startDateFormattedString,
+        end_date: endDateFormattedString,
         totalPrice: totalPrice,
         name: reservation.value.name,
         surname: reservation.value.surname,

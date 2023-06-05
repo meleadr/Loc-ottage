@@ -14,6 +14,12 @@ Laravel Framework 10.3
 
 Pas encore disponible
 
+## Pré-Requis
+Php  
+Npm  
+Composer  
+Git  
+
 ## Démarrer en local
 
 Clonez le projet

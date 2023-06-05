@@ -1,6 +1,6 @@
 # Loc'ottage
 
-Loc'ottagem est un une application web permettant de réserver des chalets. L'application a été entierement réalisée avec [Vue3](https://vuejs.org/ "Framework Vue3") et [Laravel](https://laravel.com/ "Framework PHP Laravel").
+Loc'ottage est un une application web permettant de réserver des chalets. L'application a été entièrement réalisée avec [Vue3](https://vuejs.org/ "Framework Vue3") et [Laravel](https://laravel.com/ "Framework PHP Laravel").
 
 Ce projet a été généré avec Laravel/Vite.
 
@@ -76,7 +76,7 @@ Modifiez le .env avec les informations de connexion à votre base de données
 
 <br />
 
-Effectuez les migrations (Permet de créer les tables de la base de données)
+Effectuez les migrations et les seeders (Permet de créer les tables de la base de données avec de fausse info)
 
 ```bash
   php artisan migrate --seed

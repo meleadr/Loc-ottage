@@ -97,7 +97,7 @@
         <div v-show="step === 4">
             <h3>Recapitulatif de la reservation</h3>
             <div class="info recap">
-                <p><strong>Chalet:</strong> {{ id_cottage }}</p>
+                <p><strong>Chalet:</strong> {{ cottageName }}</p>
                 <p><strong>Date de debut:</strong> {{ startDate }}</p>
                 <p><strong>Date de fin:</strong> {{ endDate }}</p>
                 <p><strong>Prix total:</strong> {{ totalPrice }} €</p>
@@ -241,6 +241,7 @@ const checkAndIncrementStep = () => {
 };
 
 const id_cottage = route.query.id;
+const cottageName = route.query.chalet;
 const totalPrice = route.query.totalPrice;
 const startDate = new Date(route.query.startDate).toLocaleDateString("fr-FR");
 const endDate = new Date(route.query.endDate).toLocaleDateString("fr-FR");
@@ -251,8 +252,8 @@ const submitReservation = () => {
         return { id: Object.keys(option)[0] };
     });
     const reservationData = {
-        startDate: startDate,
-        endDate: endDate,
+        startDate: route.query.startDate,
+        endDate: route.query.endDate,
         totalPrice: totalPrice,
         name: reservation.value.name,
         surname: reservation.value.surname,

@@ -133,7 +133,7 @@ const goReservation = () => {
             name: "Reservation",
             query: {
                 id: id,
-                chalet: chalet.value.title,
+                chalet: chalet.value.name,
                 startDate: date.start,
                 endDate: date.end,
                 totalPrice: totalPrice.value,
